@@ -40,6 +40,8 @@ long dauer=0;
 double entfernung=0;
 double maxEntfernung = 0;
 
+int piezo=5;
+
 void calcDistance(void){
   digitalWrite(trigger, LOW);
   delay(5);
@@ -63,6 +65,7 @@ void setup()
 {
   pinMode(trigger, OUTPUT);
   pinMode(echo, INPUT);
+  pinMode(piezo, OUTPUT);
   myGLCD.InitLCD();
   myGLCD.clrScr();
 }
@@ -127,16 +130,17 @@ void loop()
   myGLCD.setColor(0, 88, 255);  
   myGLCD.fillRect(x, y, x+length, y+h);
 
-  int lengthMax = calcBarLength(maxEntfernung, w, 500);
-  myGLCD.setColor(255, 255, 255);  
-  myGLCD.fillRect(x+lengthMax, y-2, x+lengthMax+2, y+h+2);
   
-// Distanz cm schreiben
-  myGLCD.setFont(SmallFont);
-  myGLCD.setColor(255, 255, 255);  
-  String outmax = "max: ";
-  myGLCD.print(outmax + maxEntfernung + out, x+lengthMax, y+h+2);
-
+  // Piepen
+  if(entfernung <= 10) {
+    digitalWrite(piezo,HIGH);
+    myGLCD.setFont(BigFont);
+    myGLCD.setColor(255, 128, 0);  
+    String outmax = "max: ";
+    myGLCD.print("Alarm", CENTER, y+h+2);
+  }  else  {
+    digitalWrite(piezo,LOW);
+  }
  
   delay(1000);
 }
