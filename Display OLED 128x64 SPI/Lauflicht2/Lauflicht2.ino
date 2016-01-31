@@ -77,5 +77,5 @@ void loop(void) {
   }else if (current == 2){
     inkrement = 1;
   }
-  delay(50); 
+  delay(10); 
 }
