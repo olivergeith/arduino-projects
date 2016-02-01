@@ -17,8 +17,9 @@ int p4 = 5;
 int p5 = 6; 
 int p6 = 7; 
 //int p7 = 8; 
+int taster = 13;
 
-int current = 2;
+ int current = 2;
 
 void setPin(int pin, boolean on)
 {
@@ -60,6 +61,7 @@ void setup(void) {
   pinMode(p4, OUTPUT);
   pinMode(p5, OUTPUT);
   pinMode(p6, OUTPUT);
+  pinMode(taster, INPUT_PULLUP);
 
 }
 
@@ -71,12 +73,15 @@ void loop(void) {
     draw();
   } while( u8g.nextPage() );
 
-  current = current + inkrement;
-  if (current==7)
+  if (digitalRead(taster) == LOW)
   {
-    inkrement = -1;
-  }else if (current == 2){
-    inkrement = 1;
+    current = current + inkrement;
+    if (current==7)
+    {
+      inkrement = -1;
+    }else if (current == 2){
+      inkrement = 1;
+    }
   }
   delay(100); 
 }
