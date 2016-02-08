@@ -1,0 +1,22 @@
+//Firstly,Every LCD_IO Pins can't be connected with Arduino Pins directly,Every IO Pins should Connecte with a 200次~2K次 Resistor In series.
+//As shown in the figure below:
+//                     ______________________
+//----LCD IO pins-----|_200次~2K次 Resistor__|-----Arduino UNO IO Pins---------
+//
+/***********************************************************
+//IO connection instructions:
+//LCD_Model Pin_SDA/SDI/MOSI Connect to Arduino_UNO Pin11
+//LCD_Model Pin_SCL/CLK/SCLK Connect to Arduino_UNO Pin10
+//LCD_Model Pin_CS/CE Connect to Arduino_UNO Pin9
+//LCD_Model Pin_RST/RESET Connect to Arduino_UNO Pin12
+//LCD_Model Pin_RS/DC Connect to Arduino_UNO Pin8
+/**********************************************************
+//Power connection instructions:
+//VCC:Connect to 5V DC.
+//GND:Connect to Ground.
+//BL: Connect to High Level(or VCC),Backlight ON;
+//    Low Level(or GND) Backlight OFF.
+/**********************************************************
+//Note:The "UTFT.zip" library should be Install firstly,if not so, the program won't be correctly compile.
+/**********************************************************
+
