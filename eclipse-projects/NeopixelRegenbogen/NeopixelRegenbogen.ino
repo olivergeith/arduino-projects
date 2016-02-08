@@ -36,8 +36,8 @@ U8GLIB_SH1106_128X64 u8g(d0, d1, cs, dc, res);
 // durchlaufvariable für start-color
 // wird im Loop hochgezählt
 int j = 0;
-int dt = 1;
-int cycles = 16;
+int dt = 1;		// Speed
+int cycles = 1; // Anzahl der Farbdurchläufe
 
 // 10k Poti an pin A5
 // links/rechts an Vcc und Gnd
@@ -107,7 +107,7 @@ void fillLCD(void){
 //  u8g.setFont(u8g_font_unifont);  // select font
   u8g.setFont(u8g_font_profont11);  // select font
   int zeilenAbstand = 12;
-  u8g.drawFrame(0,0,126,64);
+  u8g.drawRFrame(0,0,126,64,5);
   u8g.drawStr(5, 1*zeilenAbstand, "Poti Rainbow");
   u8g.drawStr(5, 2*zeilenAbstand, "Color:");
   u8g.drawStr(5, 3*zeilenAbstand, "Speed:");
