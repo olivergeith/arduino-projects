@@ -6,15 +6,8 @@
 #include <Adafruit_NeoPixel.h>
 #include "U8glib.h"
 
-#define BUTTON_PIN   2    // Digital IO pin connected to the button.  This will be
-                          // driven with a pull-up resistor so the switch should
-                          // pull the pin to ground momentarily.  On a high -> low
-                          // transition the button press logic will execute.
-
 #define PIXEL_PIN    6    // Digital IO pin connected to the NeoPixels.
-
 #define PIXEL_COUNT 16
-
 // Parameter 1 = number of pixels in strip,  neopixel stick has 8
 // Parameter 2 = pin number (most are valid)
 // Parameter 3 = pixel type flags, add together as needed:
@@ -39,11 +32,12 @@ int j = 0;
 int dt = 1;		// Speed
 int cycles = 1; // Anzahl der Farbdurchläufe
 
+// Zwei Potis an A4 Und A5
 // 10k Poti an pin A5
 // links/rechts an Vcc und Gnd
-// mitte an A5
-int potiPin = A5;
-int potiPin2 = A4;
+// mitte an A5/A4
+int potiPinSpeed = A5;
+int potiPinCycles = A4;
 
 void setup() {
 //  u8g.setRot180();
@@ -53,8 +47,8 @@ void setup() {
 }
 
 void loop() {
-  dt = map(analogRead(potiPin), 0, 1023, 0, 45);
-  cycles = map(analogRead(potiPin2), 0, 1000, 1, 16);
+  dt = map(analogRead(potiPinSpeed), 0, 1023, 0, 45);
+  cycles = map(analogRead(potiPinCycles), 0, 1000, 1, 16);
 
 
   for(int i=0; i< strip.numPixels(); i++) {

@@ -7,12 +7,9 @@
 #include "U8glib.h"
 #include "IRremote.h"
 
-int IR_RECV_PIN = 7;
 
 #define PIXEL_PIN    6    // Digital IO pin connected to the NeoPixels.
-
 #define PIXEL_COUNT 16
-
 // Parameter 1 = number of pixels in strip,  neopixel stick has 8
 // Parameter 2 = pin number (most are valid)
 // Parameter 3 = pixel type flags, add together as needed:
@@ -24,6 +21,7 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(PIXEL_COUNT, PIXEL_PIN,
 NEO_GRB + NEO_KHZ800);
 
 // IRReceiver
+int IR_RECV_PIN = 7;
 IRrecv irrecv(IR_RECV_PIN);
 decode_results results;
 String ircode="";
@@ -42,24 +40,16 @@ int j = 0;
 int dt = 1;		// Speed
 int cycles = 1; // Anzahl der Farbdurchläufe
 
-// 10k Poti an pin A5
-// links/rechts an Vcc und Gnd
-// mitte an A5
-int potiPin = A5;
-int potiPin2 = A4;
 
 void setup() {
 	Serial.begin(9600);
 	irrecv.enableIRIn();
-
 	strip.setBrightness(64);
 	strip.begin();
 	strip.show(); // Initialize all pixels to 'off'
 }
 
 void loop() {
-//  dt = map(analogRead(potiPin), 0, 1023, 0, 45);
-//  cycles = map(analogRead(potiPin2), 0, 1000, 1, 16);
 
 	ircode = "";
 	if (irrecv.decode(&results)) {
