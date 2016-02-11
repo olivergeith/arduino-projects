@@ -5,13 +5,19 @@
 
 #include <Adafruit_NeoPixel.h>
 #include "U8glib.h"
-
+#include <stdarg.h>
 #include <Wire.h>
 #include "RTClib.h"
+// Include the Bounce2 library found here :
+// https://github.com/thomasfredericks/Bounce2
+#include <Bounce2.h>
+#include "Mode.h"
+#include "AnimatorCircle.h"
 
 // Clock DS1307
 RTC_DS1307 RTC;
 DateTime now;
+DateTime nowOld;
 
 #define PIXEL_PIN    6    // Digital IO pin connected to the NeoPixels.
 #define PIXEL_COUNT 60
@@ -33,15 +39,39 @@ int dc = 11;
 int cs = 12;
 U8GLIB_SH1106_128X64 u8g(d0, d1, cs, dc, res);
 
+#define BUTTON_PIN_1 2
+#define BUTTON_PIN_2 3
+#define BUTTON_PIN_3 4
+// Instantiate a Bounce object
+Bounce button1 = Bounce();
+Bounce button2 = Bounce();
+Bounce button3 = Bounce();
+
+Mode mode;
+AnimatorCircle animatorHours(strip, strip.Color(0, 0, 255));
+AnimatorCircle animatorMinutes(strip, strip.Color(0, 255, 255));
+AnimatorCircle animatorSeconds(strip, strip.Color(255, 0, 255), false);
+
 void setup() {
-	Serial.begin(9600);
+	// Setup the first button with an internal pull-up :
+	pinMode(BUTTON_PIN_1, INPUT_PULLUP);
+	pinMode(BUTTON_PIN_2, INPUT_PULLUP);
+	pinMode(BUTTON_PIN_3, INPUT_PULLUP);
+	// After setting up the button, setup the Bounce instance :
+	button1.attach(BUTTON_PIN_1);
+	button1.interval(5); // interval in ms
+	button2.attach(BUTTON_PIN_2);
+	button2.interval(5); // interval in ms
+	button3.attach(BUTTON_PIN_3);
+	button3.interval(5); // interval in ms
+
 	Wire.begin();
 	RTC.begin();
 
 	if (!RTC.isrunning()) {
 		Serial.println("RTC is NOT running!");
 		// following line sets the RTC to the date & time this sketch was compiled
-		//RTC.adjust(DateTime(__DATE__, __TIME__));
+		RTC.adjust(DateTime(__DATE__, __TIME__));
 	}
 
 	strip.setBrightness(64);
@@ -50,20 +80,70 @@ void setup() {
 }
 
 void loop() {
-	now = RTC.now();
+	// Update the Bounce instances :
+	button1.update();
+	button2.update();
+	button3.update();
 
-	Serial.print(now.year(), DEC);
-	Serial.print('/');
-	Serial.print(now.month(), DEC);
-	Serial.print('/');
-	Serial.print(now.day(), DEC);
-	Serial.print(' ');
-	Serial.print(now.hour(), DEC);
-	Serial.print(':');
-	Serial.print(now.minute(), DEC);
-	Serial.print(':');
-	Serial.print(now.second(), DEC);
-	Serial.println();
+	if (button2.fell() == true) {
+		mode.increment();
+	}
+	// sind wir im Setting Mode ?
+	if (mode.getCurrentModeInt() > 0) {
+		TimeSpan oneMinute(0, 0, 1, 0);
+		TimeSpan oneHour(0, 1, 0, 0);
+		TimeSpan oneDay(1, 0, 0, 0);
+		TimeSpan oneMonth(30, 0, 0, 0);
+		TimeSpan oneYear(365, 0, 0, 0);
+
+		switch (mode.getCurrentModeInt()) {
+		default:
+			break;
+		case 1:  // set Minutes
+			if (button1.fell() == true) { // -
+				RTC.adjust(now - oneMinute);
+			}
+			if (button3.fell() == true) { // +
+				RTC.adjust(now + oneMinute);
+			}
+			break;
+		case 2: // set hours
+			if (button1.fell() == true) { // -
+				RTC.adjust(now - oneHour);
+			}
+			if (button3.fell() == true) { // +
+				RTC.adjust(now + oneHour);
+			}
+			break;
+		case 3: // set day
+			if (button1.fell() == true) { // -
+				RTC.adjust(now - oneDay);
+			}
+			if (button3.fell() == true) { // +
+				RTC.adjust(now + oneDay);
+			}
+			break;
+		case 4: // set month
+			if (button1.fell() == true) { // -
+				RTC.adjust(now - oneMonth);
+			}
+			if (button3.fell() == true) { // +
+				RTC.adjust(now + oneMonth);
+			}
+			break;
+		case 5: // set year
+			if (button1.fell() == true) { // -
+				RTC.adjust(now - oneYear);
+			}
+			if (button3.fell() == true) { // +
+				RTC.adjust(now + oneYear);
+			}
+			break;
+		}
+	}
+
+	// aktuelle Uhrzeit lesen
+	now = RTC.now();
 
 	// 24h uhr auf 12h uhr umsetzen
 	int hour12h = now.hour();
@@ -73,35 +153,32 @@ void loop() {
 	int minuteoffset = now.minute() * 5 / 60;
 	int hourindex = 60 * hour12h / 12 + minuteoffset;
 
-	// erstmal schwarz/aus
 	strip.clear();
-//	for (int i = 0; i < strip.numPixels(); i++) {
-//		strip.setPixelColor(i, 0, 0, 0);
-//	}
-
-	strip.setPixelColor(now.minute(), 255, 0, 0);
-	strip.setPixelColor(hourindex, 255, 255, 255);
-	// breitere Stunden
-	if (hourindex == strip.numPixels()) {
-		strip.setPixelColor(hourindex - 1, 0, 0, 255);
-		strip.setPixelColor(0, 0, 0, 255);
-	} else if (hourindex == 0) {
-		strip.setPixelColor(hourindex + 1, 0, 0, 255);
-		strip.setPixelColor(strip.numPixels() - 1, 0, 0, 255);
-	} else {
-		strip.setPixelColor(hourindex + 1, 0, 0, 255);
-		strip.setPixelColor(hourindex - 1, 0, 0, 255);
-	}
-	strip.setPixelColor(now.second(), 255, 255, 0);
+//	drawScala();
+	animatorMinutes.draw(now.minute());
+	animatorHours.draw(hourindex);
+	animatorSeconds.draw(now.second());
 	strip.show();
 
-	// drawing lcd
-	u8g.firstPage();
-	do {
-		fillLCD();
-	} while (u8g.nextPage());
+	if (nowOld.unixtime() != now.unixtime()) {
+		// drawing lcd
+		u8g.firstPage();
+		do {
+			fillLCD();
+		} while (u8g.nextPage());
+	}
+	nowOld = now;
+	delay(2);
+}
 
-	delay(20);
+void drawScala(void) {
+	for (int i = 0; i < strip.numPixels(); i++) {
+		if (i % 15 == 0) {
+			strip.setPixelColor(i, 128, 128, 255);
+		} else if (i % 5 == 0) {
+			//	strip.setPixelColor(i, 16, 16, 32);
+		}
+	}
 }
 
 // Input a value 0 to 255 to get a color value.
@@ -120,16 +197,22 @@ uint32_t Wheel(byte WheelPos) {
 }
 
 void fillLCD(void) {
-	u8g.setFont(u8g_font_profont11);  // select font
+	u8g.setFont(u8g_font_profont12);  // select font
 	int zeilenAbstand = 11;
 	u8g.drawRFrame(0, 0, 126, 64, 5);
-	u8g.drawStr(5, 1 * zeilenAbstand, "Clock");
-	u8g.drawStr(5, 2 * zeilenAbstand, "Uhr:");
-	u8g.setPrintPos(50, 2 * zeilenAbstand);  // set position
-	u8g.print(now.hour());  //
-	u8g.setPrintPos(70, 2 * zeilenAbstand);  // set position
-	u8g.print(now.minute());  //
-	u8g.setPrintPos(90, 2 * zeilenAbstand);  // set position
-	u8g.print(now.second());  //
+	u8g.drawStr(5, 1 * zeilenAbstand, "NeoPix-Clock");
+
+	char buffer[35];  // you have to be aware of how long your data can be
+// not forgetting unprintable and null term chars
+// Zeit
+	u8g.setFont(u8g_font_profont22);  // select font
+	sprintf(buffer, "%02d:%02d:%02d", now.hour(), now.minute(), now.second());
+	u8g.drawStr(5, 3 * zeilenAbstand, buffer);
+// Datum
+	u8g.setFont(u8g_font_profont11);  // select font
+	sprintf(buffer, "%02d.%02d.%04d", now.day(), now.month(), now.year());
+	u8g.drawStr(5, 4 * zeilenAbstand, buffer);
+// Modus/Menu
+	u8g.drawStr(5, 5 * zeilenAbstand, mode.getCurrentMode());
 }
 
