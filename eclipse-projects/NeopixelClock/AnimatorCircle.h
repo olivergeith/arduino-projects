@@ -15,6 +15,9 @@ public:
 			boolean hasAnimation = true);
 	virtual ~AnimatorCircle();
 	void draw(int newVal);
+	void setHasAnimation(boolean hasIt);
+	boolean isHasAnimation(void);
+
 private:
 	uint32_t color;
 	int oldVal;
@@ -23,6 +26,7 @@ private:
 	int animationStep;
 	Adafruit_NeoPixel strip;
 	uint32_t Wheel(byte WheelPos);
+	void setPixel(int index, uint32_t color);
 };
 
 #endif /* ANIMATORCIRCLE_H_ */

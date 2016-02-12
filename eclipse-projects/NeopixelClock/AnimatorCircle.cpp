@@ -21,29 +21,45 @@ AnimatorCircle::~AnimatorCircle() {
 	// TODO Auto-generated destructor stub
 }
 
+void AnimatorCircle::setHasAnimation(boolean hasIt) {
+	this->hasAnimation = hasIt;
+}
+
+boolean AnimatorCircle::isHasAnimation(void) {
+	return this->hasAnimation;
+}
+
 void AnimatorCircle::draw(int newVal) {
 	if (oldVal != newVal) {
 		oldVal = newVal;
 		animating = true;
+		animationStep = 1;
 	}
 	if (hasAnimation == false) {
 		animating = false;
 	}
+	// wenn im Animationg Mode
 	if (animating) {
 		int index = newVal + animationStep;
-		if (index >= strip.numPixels()) {
-			index = index - strip.numPixels();
-		}
+//		uint32_t col = Wheel(random(255));
 		uint32_t col = Wheel(((animationStep * 256 / strip.numPixels())));
-		strip.setPixelColor(index, col);
+		setPixel(index, col);
+		// animation fortsetzen ?
 		animationStep++;
 		if (animationStep == strip.numPixels()) {
-			animationStep = 0;
 			animating = false;
 		}
 	} else {
-		strip.setPixelColor(newVal, color);
+		// sonst ganz normal den Zeiger setzen
+		setPixel(newVal, color);
 	}
+}
+
+void AnimatorCircle::setPixel(int index, uint32_t color) {
+	if (index >= strip.numPixels()) {
+		index = index - strip.numPixels();
+	}
+	strip.setPixelColor(index, color);
 }
 
 // Input a value 0 to 255 to get a color value.

@@ -11,8 +11,8 @@
 // Include the Bounce2 library found here :
 // https://github.com/thomasfredericks/Bounce2
 #include <Bounce2.h>
-#include "Mode.h"
 #include "AnimatorCircle.h"
+#include "Menu.h"
 
 // Clock DS1307
 RTC_DS1307 RTC;
@@ -47,10 +47,10 @@ Bounce button1 = Bounce();
 Bounce button2 = Bounce();
 Bounce button3 = Bounce();
 
-Mode mode;
+Menu mode(6);
 AnimatorCircle animatorHours(strip, strip.Color(0, 0, 255));
-AnimatorCircle animatorMinutes(strip, strip.Color(0, 255, 255));
-AnimatorCircle animatorSeconds(strip, strip.Color(255, 0, 255), false);
+AnimatorCircle animatorMinutes(strip, strip.Color(255, 64, 0));
+AnimatorCircle animatorSeconds(strip, strip.Color(128, 0, 255), false);
 
 void setup() {
 	// Setup the first button with an internal pull-up :
@@ -139,6 +139,14 @@ void loop() {
 				RTC.adjust(now + oneYear);
 			}
 			break;
+		case 6: // animate Seconds
+			if (button1.fell() == true) { // -
+				animatorSeconds.setHasAnimation(false);
+			}
+			if (button3.fell() == true) { // +
+				animatorSeconds.setHasAnimation(true);
+			}
+			break;
 		}
 	}
 
@@ -168,7 +176,7 @@ void loop() {
 		} while (u8g.nextPage());
 	}
 	nowOld = now;
-	delay(2);
+	delay(4);
 }
 
 void drawScala(void) {
