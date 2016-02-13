@@ -9,24 +9,40 @@
 #define ANIMATORCIRCLE_H_
 #include <Adafruit_NeoPixel.h>
 
+enum Style {
+	none, fullRotation, doubleHalfRotation
+};
+
 class AnimatorCircle {
 public:
-	AnimatorCircle(Adafruit_NeoPixel strip, uint32_t color,
-			boolean hasAnimation = true);
+	AnimatorCircle(Adafruit_NeoPixel strip, int wheelColor, Style style = none);
 	virtual ~AnimatorCircle();
+
 	void draw(int newVal);
-	void setHasAnimation(boolean hasIt);
-	boolean isHasAnimation(void);
+
+	void setAnimationStyle(Style style);
+	Style getAnimationStyle(void);
+	void incrementAnimationStyle(void);
+	void decrementAnimationStyle(void);
+
+	void incrementColor(void);
+	void decrementColor(void);
+	int getWheelColor(void);
+
+	char* getAnimationStyleText(void);
 
 private:
-	uint32_t color;
+	int wheelColor;
 	int oldVal;
 	bool animating;
-	boolean hasAnimation;
+	Style animationStyle;
 	int animationStep;
 	Adafruit_NeoPixel strip;
 	uint32_t Wheel(byte WheelPos);
-	void setPixel(int index, uint32_t color);
+	void setPixel(int index, int wheelColor);
+	void drawStyle0(int newVal);
+	void drawStyle1(int newVal);
+	void drawStyle2(int newVal);
 };
 
 #endif /* ANIMATORCIRCLE_H_ */

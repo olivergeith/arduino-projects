@@ -47,10 +47,11 @@ Bounce button1 = Bounce();
 Bounce button2 = Bounce();
 Bounce button3 = Bounce();
 
-Menu mode(6);
-AnimatorCircle animatorHours(strip, strip.Color(0, 0, 255));
-AnimatorCircle animatorMinutes(strip, strip.Color(255, 64, 0));
-AnimatorCircle animatorSeconds(strip, strip.Color(128, 0, 255), false);
+Menu mode;
+// nummern sind wheelcolors
+AnimatorCircle animatorHours(strip, 170, fullRotation);
+AnimatorCircle animatorMinutes(strip, 112, fullRotation);
+AnimatorCircle animatorSeconds(strip, 16, doubleHalfRotation);
 
 void setup() {
 	// Setup the first button with an internal pull-up :
@@ -139,12 +140,52 @@ void loop() {
 				RTC.adjust(now + oneYear);
 			}
 			break;
-		case 6: // animate Seconds
+		case 6: // animate hours
 			if (button1.fell() == true) { // -
-				animatorSeconds.setHasAnimation(false);
+				animatorHours.decrementAnimationStyle();
 			}
 			if (button3.fell() == true) { // +
-				animatorSeconds.setHasAnimation(true);
+				animatorHours.incrementAnimationStyle();
+			}
+			break;
+		case 7: // animate minutes
+			if (button1.fell() == true) { // -
+				animatorMinutes.decrementAnimationStyle();
+			}
+			if (button3.fell() == true) { // +
+				animatorMinutes.incrementAnimationStyle();
+			}
+			break;
+		case 8: // animate Seconds
+			if (button1.fell() == true) { // -
+				animatorSeconds.decrementAnimationStyle();
+			}
+			if (button3.fell() == true) { // +
+				animatorSeconds.incrementAnimationStyle();
+			}
+			break;
+		case 9: // color hours
+			if (button1.read() == LOW) { // -
+				animatorHours.decrementColor();
+			}
+			if (button3.read() == LOW) { // +
+				animatorHours.incrementColor();
+			}
+			break;
+		case 10: // color minutes
+			if (button1.read() == LOW) { // -
+				animatorMinutes.decrementColor();
+			}
+			if (button3.read() == LOW) { // +
+				animatorMinutes.incrementColor();
+			}
+			break;
+		case 11: // color Seconds
+			if (button1.read() == LOW) { // -
+				animatorSeconds.decrementColor();
+			}
+			if (button3.read() == LOW) { // +
+				animatorSeconds.incrementColor();
 			}
 			break;
 		}
@@ -176,7 +217,7 @@ void loop() {
 		} while (u8g.nextPage());
 	}
 	nowOld = now;
-	delay(4);
+	delay(5);
 }
 
 void drawScala(void) {
@@ -206,21 +247,31 @@ uint32_t Wheel(byte WheelPos) {
 
 void fillLCD(void) {
 	u8g.setFont(u8g_font_profont12);  // select font
-	int zeilenAbstand = 11;
+	int zeilenAbstand = 10;
+// Frame
 	u8g.drawRFrame(0, 0, 126, 64, 5);
-	u8g.drawStr(5, 1 * zeilenAbstand, "NeoPix-Clock");
 
-	char buffer[35];  // you have to be aware of how long your data can be
-// not forgetting unprintable and null term chars
 // Zeit
+	char buffer[35];  // you have to be aware of how long your data can be
 	u8g.setFont(u8g_font_profont22);  // select font
 	sprintf(buffer, "%02d:%02d:%02d", now.hour(), now.minute(), now.second());
-	u8g.drawStr(5, 3 * zeilenAbstand, buffer);
+	u8g.drawStr(5, 18, buffer);
 // Datum
 	u8g.setFont(u8g_font_profont11);  // select font
 	sprintf(buffer, "%02d.%02d.%04d", now.day(), now.month(), now.year());
-	u8g.drawStr(5, 4 * zeilenAbstand, buffer);
+	u8g.drawStr(5, 18 + 1 * zeilenAbstand, buffer);
 // Modus/Menu
-	u8g.drawStr(5, 5 * zeilenAbstand, mode.getCurrentMode());
+	u8g.drawStr(5, 20 + 2 * zeilenAbstand, mode.getCurrentMode());
+
+// Animation Modi
+	sprintf(buffer, "Ani: %s %s %s", animatorHours.getAnimationStyleText(),
+			animatorMinutes.getAnimationStyleText(),
+			animatorSeconds.getAnimationStyleText());
+	u8g.drawStr(5, 20 + 3 * zeilenAbstand, buffer);
+// Colors
+	sprintf(buffer, "Col: %03d %03d %03d", animatorHours.getWheelColor(),
+			animatorMinutes.getWheelColor(), animatorSeconds.getWheelColor());
+	u8g.drawStr(5, 20 + 4 * zeilenAbstand, buffer);
+
 }
 

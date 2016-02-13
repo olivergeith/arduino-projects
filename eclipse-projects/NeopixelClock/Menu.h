@@ -10,16 +10,17 @@
 
 class Menu {
 public:
-	Menu(int maxMode);
+	Menu();
 	virtual ~Menu();
 
 	char* getCurrentMode();
 	void increment();
 //	void decrement();
 	int getCurrentModeInt();
+	int getMaxMode();
 private:
 	int mode;
-	int MAXMODE;
+	int MAXMODE = 11;
 };
 
 #endif /* MENU_H_ */

@@ -7,11 +7,11 @@
 
 #include "AnimatorCircle.h"
 
-AnimatorCircle::AnimatorCircle(Adafruit_NeoPixel strip, uint32_t color,
-		boolean hasAnimation) {
-	this->hasAnimation = hasAnimation;
+AnimatorCircle::AnimatorCircle(Adafruit_NeoPixel strip, int wheelColor,
+		Style style) {
+	this->animationStyle = style;
 	this->strip = strip;
-	this->color = color;
+	this->wheelColor = wheelColor;
 	oldVal = 0;
 	animating = false;
 	animationStep = 0;
@@ -21,45 +21,168 @@ AnimatorCircle::~AnimatorCircle() {
 	// TODO Auto-generated destructor stub
 }
 
-void AnimatorCircle::setHasAnimation(boolean hasIt) {
-	this->hasAnimation = hasIt;
+void AnimatorCircle::incrementColor(void) {
+	wheelColor++;
+	if (wheelColor > 256) {
+		wheelColor = 256;
+	}
+}
+void AnimatorCircle::decrementColor(void) {
+	wheelColor--;
+	if (wheelColor < 0) {
+		wheelColor = 0;
+	}
 }
 
-boolean AnimatorCircle::isHasAnimation(void) {
-	return this->hasAnimation;
+int AnimatorCircle::getWheelColor(void) {
+	return wheelColor;
+}
+
+void AnimatorCircle::setAnimationStyle(Style style) {
+	this->animationStyle = style;
+}
+
+void AnimatorCircle::incrementAnimationStyle(void) {
+	switch (animationStyle) {
+	default:
+	case none:
+		animationStyle = doubleHalfRotation;
+		break;
+	case doubleHalfRotation:
+		animationStyle = fullRotation;
+		break;
+	case fullRotation:
+		// nothing
+		break;
+	}
+}
+void AnimatorCircle::decrementAnimationStyle(void) {
+	switch (animationStyle) {
+	default:
+	case none:
+		// do nothing
+		break;
+	case doubleHalfRotation:
+		animationStyle = none;
+		break;
+	case fullRotation:
+		animationStyle = doubleHalfRotation;
+		break;
+	}
+}
+
+char* AnimatorCircle::getAnimationStyleText(void) {
+	switch (animationStyle) {
+	default:
+	case none:
+		return "None";
+	case doubleHalfRotation:
+		return "Half";
+	case fullRotation:
+		return "Full";
+	}
+}
+
+Style AnimatorCircle::getAnimationStyle(void) {
+	return animationStyle;
 }
 
 void AnimatorCircle::draw(int newVal) {
+	switch (animationStyle) {
+	default:
+	case none:
+		drawStyle0(newVal);
+		break;
+	case fullRotation:
+		drawStyle1(newVal);
+		break;
+	case doubleHalfRotation:
+		drawStyle2(newVal);
+		break;
+	}
+}
+
+void AnimatorCircle::drawStyle0(int newVal) {
+	if (oldVal != newVal) {
+		oldVal = newVal;
+	}
+	setPixel(newVal, wheelColor);
+}
+
+void AnimatorCircle::drawStyle1(int newVal) {
 	if (oldVal != newVal) {
 		oldVal = newVal;
 		animating = true;
-		animationStep = 1;
+		animationStep = 0;
 	}
-	if (hasAnimation == false) {
+	if (animationStyle == none) {
 		animating = false;
 	}
 	// wenn im Animationg Mode
 	if (animating) {
 		int index = newVal + animationStep;
 //		uint32_t col = Wheel(random(255));
-		uint32_t col = Wheel(((animationStep * 256 / strip.numPixels())));
+		uint32_t col = animationStep * 255 / strip.numPixels();
 		setPixel(index, col);
-		// animation fortsetzen ?
+		// n‰chster schritt
 		animationStep++;
+		// animation fortsetzen ?
 		if (animationStep == strip.numPixels()) {
 			animating = false;
 		}
 	} else {
 		// sonst ganz normal den Zeiger setzen
-		setPixel(newVal, color);
+		setPixel(newVal, wheelColor);
 	}
 }
 
-void AnimatorCircle::setPixel(int index, uint32_t color) {
+/*
+ * Alternierende Animation um den neuen Wert rum
+ */
+void AnimatorCircle::drawStyle2(int newVal) {
+	int maxi = 30;
+	if (oldVal != newVal) {
+		oldVal = newVal;
+		animating = true;
+		animationStep = maxi;
+	}
+	if (animationStyle == none) {
+		animating = false;
+	}
+	// wenn im Animationg Mode
+	if (animating) {
+		int index = newVal;
+
+		uint32_t col = animationStep * 255 / maxi;
+
+		setPixel(index + animationStep, col);
+		setPixel(index - animationStep, col);
+
+		animationStep--;
+		// animation fortsetzen ?
+		if (animationStep == 0) {
+			animating = false;
+		}
+	} else {
+		// sonst ganz normal den Zeiger setzen
+		setPixel(newVal, wheelColor);
+	}
+}
+
+void AnimatorCircle::setPixel(int index, int wheelColor) {
+	if (index < 0) {
+		index = index + strip.numPixels();
+	}
 	if (index >= strip.numPixels()) {
 		index = index - strip.numPixels();
 	}
-	strip.setPixelColor(index, color);
+
+	// wheelcolor 256 == weiﬂ
+	if (wheelColor < 256) {
+		strip.setPixelColor(index, Wheel(wheelColor));
+	} else {
+		strip.setPixelColor(index, 255, 255, 255);
+	}
 }
 
 // Input a value 0 to 255 to get a color value.

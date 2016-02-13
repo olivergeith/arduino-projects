@@ -7,9 +7,8 @@
 
 #include "Menu.h"
 
-Menu::Menu(int maxMode) {
+Menu::Menu() {
 	mode = 0;
-	this->MAXMODE = maxMode;
 }
 
 Menu::~Menu() {
@@ -22,6 +21,10 @@ void Menu::increment() {
 	}
 }
 
+int Menu::getMaxMode(void) {
+	return MAXMODE;
+}
+
 int Menu::getCurrentModeInt() {
 	return mode;
 }
@@ -31,7 +34,7 @@ char* Menu::getCurrentMode() {
 	switch (mode) {
 	default:
 	case 0:
-		return "";
+		return "Push red for Menu...";
 	case 1:
 		return "Set Minute";
 	case 2:
@@ -43,6 +46,16 @@ char* Menu::getCurrentMode() {
 	case 5:
 		return "Set Year";
 	case 6:
+		return "Animate Hours";
+	case 7:
+		return "Animate Minutes";
+	case 8:
 		return "Animate Seconds";
+	case 9:
+		return "Color Hours";
+	case 10:
+		return "Color Minutes";
+	case 11:
+		return "Color Seconds";
 	}
 }
