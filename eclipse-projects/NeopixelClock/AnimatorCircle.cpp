@@ -121,9 +121,12 @@ void AnimatorCircle::drawStyle1(int newVal) {
 	// wenn im Animationg Mode
 	if (animating) {
 		int index = newVal + animationStep;
-//		uint32_t col = Wheel(random(255));
+
 		uint32_t col = animationStep * 255 / strip.numPixels();
+//		setPixel(index - 1, col);
 		setPixel(index, col);
+		setPixel(index + 1, col);
+
 		// nächster schritt
 		animationStep++;
 		// animation fortsetzen ?
@@ -137,7 +140,7 @@ void AnimatorCircle::drawStyle1(int newVal) {
 }
 
 /*
- * Alternierende Animation um den neuen Wert rum
+ * von beiden seiten auf den Punkt zu
  */
 void AnimatorCircle::drawStyle2(int newVal) {
 	int maxi = 30;
@@ -154,7 +157,6 @@ void AnimatorCircle::drawStyle2(int newVal) {
 		int index = newVal;
 
 		uint32_t col = animationStep * 255 / maxi;
-
 		setPixel(index + animationStep, col);
 		setPixel(index - animationStep, col);
 

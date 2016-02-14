@@ -51,7 +51,7 @@ Menu mode;
 // nummern sind wheelcolors
 AnimatorCircle animatorHours(strip, 170, fullRotation);
 AnimatorCircle animatorMinutes(strip, 112, fullRotation);
-AnimatorCircle animatorSeconds(strip, 16, doubleHalfRotation);
+AnimatorCircle animatorSeconds(strip, 16, fullRotation);
 
 void setup() {
 	// Setup the first button with an internal pull-up :
