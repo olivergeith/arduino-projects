@@ -123,11 +123,11 @@ void AnimatorCircle::drawStyle1(int newVal) {
 		int index = newVal + animationStep;
 
 		uint32_t col = animationStep * 255 / strip.numPixels();
-//		setPixel(index - 1, col);
+		setPixel(index - 1, col);
 		setPixel(index, col);
-		setPixel(index + 1, col);
+//		setPixel(index + 1, col);
 
-		// nächster schritt
+// nächster schritt
 		animationStep++;
 		// animation fortsetzen ?
 		if (animationStep == strip.numPixels()) {
