@@ -15,7 +15,7 @@ public:
 
 	char* getCurrentMode();
 	void increment();
-//	void decrement();
+	void decrement();
 	int getCurrentModeInt();
 	int getMaxMode();
 private:

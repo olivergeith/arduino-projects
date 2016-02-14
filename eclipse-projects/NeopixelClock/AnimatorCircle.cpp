@@ -7,8 +7,7 @@
 
 #include "AnimatorCircle.h"
 
-AnimatorCircle::AnimatorCircle(Adafruit_NeoPixel strip, int wheelColor,
-		Style style) {
+AnimatorCircle::AnimatorCircle(Adafruit_NeoPixel strip, int wheelColor, Style style) {
 	this->animationStyle = style;
 	this->strip = strip;
 	this->wheelColor = wheelColor;
@@ -122,9 +121,15 @@ void AnimatorCircle::drawStyle1(int newVal) {
 	if (animating) {
 		int index = newVal + animationStep;
 
-		uint32_t col = animationStep * 255 / strip.numPixels();
-		setPixel(index - 1, col);
-		setPixel(index, col);
+		// wir fangen bei der normalen farbe an und zählen die farbe hoch
+		uint32_t wheelCol = wheelColor + animationStep * 255 / strip.numPixels();
+		// wenn wir beim hochzählen über 255 kommen, fangen wqir bei 0 wieder an ...ziehen also 255 ab!
+		if (wheelCol > 255) {
+			wheelCol = wheelCol - 255;
+		}
+		// dann setzen wir zwei pixel
+		setPixel(index - 1, wheelCol);
+		setPixel(index, wheelCol);
 //		setPixel(index + 1, col);
 
 // nächster schritt
@@ -156,9 +161,15 @@ void AnimatorCircle::drawStyle2(int newVal) {
 	if (animating) {
 		int index = newVal;
 
-		uint32_t col = animationStep * 255 / maxi;
-		setPixel(index + animationStep, col);
-		setPixel(index - animationStep, col);
+		// wir fangen bei der normalen farbe an und zählen die farbe hoch
+		uint32_t wheelCol = wheelColor + animationStep * 255 / maxi;
+		// wenn wir beim hochzählen über 255 kommen, fangen wqir bei 0 wieder an ...ziehen also 255 ab!
+		if (wheelCol > 255) {
+			wheelCol = wheelCol - 255;
+		}
+		// dann setzen wir zwei pixel
+		setPixel(index + animationStep, wheelCol);
+		setPixel(index - animationStep, wheelCol);
 
 		animationStep--;
 		// animation fortsetzen ?

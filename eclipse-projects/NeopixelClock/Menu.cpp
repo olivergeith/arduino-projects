@@ -21,6 +21,13 @@ void Menu::increment() {
 	}
 }
 
+void Menu::decrement() {
+	mode--;
+	if (mode < 0) {
+		mode = MAXMODE;
+	}
+}
+
 int Menu::getMaxMode(void) {
 	return MAXMODE;
 }

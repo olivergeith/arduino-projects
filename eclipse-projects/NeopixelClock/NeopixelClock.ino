@@ -43,9 +43,9 @@ U8GLIB_SH1106_128X64 u8g(d0, d1, cs, dc, res);
 #define BUTTON_PIN_2 3
 #define BUTTON_PIN_3 4
 // Instantiate a Bounce object
-Bounce button1 = Bounce();
-Bounce button2 = Bounce();
-Bounce button3 = Bounce();
+Bounce buttonLeft = Bounce();
+Bounce buttonDown = Bounce();
+Bounce buttonRight = Bounce();
 
 Menu mode;
 // nummern sind wheelcolors
@@ -59,12 +59,12 @@ void setup() {
 	pinMode(BUTTON_PIN_2, INPUT_PULLUP);
 	pinMode(BUTTON_PIN_3, INPUT_PULLUP);
 	// After setting up the button, setup the Bounce instance :
-	button1.attach(BUTTON_PIN_1);
-	button1.interval(5); // interval in ms
-	button2.attach(BUTTON_PIN_2);
-	button2.interval(5); // interval in ms
-	button3.attach(BUTTON_PIN_3);
-	button3.interval(5); // interval in ms
+	buttonLeft.attach(BUTTON_PIN_1);
+	buttonLeft.interval(5); // interval in ms
+	buttonDown.attach(BUTTON_PIN_2);
+	buttonDown.interval(5); // interval in ms
+	buttonRight.attach(BUTTON_PIN_3);
+	buttonRight.interval(5); // interval in ms
 
 	Wire.begin();
 	RTC.begin();
@@ -82,11 +82,11 @@ void setup() {
 
 void loop() {
 	// Update the Bounce instances :
-	button1.update();
-	button2.update();
-	button3.update();
+	buttonLeft.update();
+	buttonDown.update();
+	buttonRight.update();
 
-	if (button2.fell() == true) {
+	if (buttonDown.fell() == true) {
 		mode.increment();
 	}
 	// sind wir im Setting Mode ?
@@ -101,90 +101,90 @@ void loop() {
 		default:
 			break;
 		case 1:  // set Minutes
-			if (button1.fell() == true) { // -
+			if (buttonLeft.fell() == true) { // -
 				RTC.adjust(now - oneMinute);
 			}
-			if (button3.fell() == true) { // +
+			if (buttonRight.fell() == true) { // +
 				RTC.adjust(now + oneMinute);
 			}
 			break;
 		case 2: // set hours
-			if (button1.fell() == true) { // -
+			if (buttonLeft.fell() == true) { // -
 				RTC.adjust(now - oneHour);
 			}
-			if (button3.fell() == true) { // +
+			if (buttonRight.fell() == true) { // +
 				RTC.adjust(now + oneHour);
 			}
 			break;
 		case 3: // set day
-			if (button1.fell() == true) { // -
+			if (buttonLeft.fell() == true) { // -
 				RTC.adjust(now - oneDay);
 			}
-			if (button3.fell() == true) { // +
+			if (buttonRight.fell() == true) { // +
 				RTC.adjust(now + oneDay);
 			}
 			break;
 		case 4: // set month
-			if (button1.fell() == true) { // -
+			if (buttonLeft.fell() == true) { // -
 				RTC.adjust(now - oneMonth);
 			}
-			if (button3.fell() == true) { // +
+			if (buttonRight.fell() == true) { // +
 				RTC.adjust(now + oneMonth);
 			}
 			break;
 		case 5: // set year
-			if (button1.fell() == true) { // -
+			if (buttonLeft.fell() == true) { // -
 				RTC.adjust(now - oneYear);
 			}
-			if (button3.fell() == true) { // +
+			if (buttonRight.fell() == true) { // +
 				RTC.adjust(now + oneYear);
 			}
 			break;
 		case 6: // animate hours
-			if (button1.fell() == true) { // -
+			if (buttonLeft.fell() == true) { // -
 				animatorHours.decrementAnimationStyle();
 			}
-			if (button3.fell() == true) { // +
+			if (buttonRight.fell() == true) { // +
 				animatorHours.incrementAnimationStyle();
 			}
 			break;
 		case 7: // animate minutes
-			if (button1.fell() == true) { // -
+			if (buttonLeft.fell() == true) { // -
 				animatorMinutes.decrementAnimationStyle();
 			}
-			if (button3.fell() == true) { // +
+			if (buttonRight.fell() == true) { // +
 				animatorMinutes.incrementAnimationStyle();
 			}
 			break;
 		case 8: // animate Seconds
-			if (button1.fell() == true) { // -
+			if (buttonLeft.fell() == true) { // -
 				animatorSeconds.decrementAnimationStyle();
 			}
-			if (button3.fell() == true) { // +
+			if (buttonRight.fell() == true) { // +
 				animatorSeconds.incrementAnimationStyle();
 			}
 			break;
 		case 9: // color hours
-			if (button1.read() == LOW) { // -
+			if (buttonLeft.read() == LOW) { // -
 				animatorHours.decrementColor();
 			}
-			if (button3.read() == LOW) { // +
+			if (buttonRight.read() == LOW) { // +
 				animatorHours.incrementColor();
 			}
 			break;
 		case 10: // color minutes
-			if (button1.read() == LOW) { // -
+			if (buttonLeft.read() == LOW) { // -
 				animatorMinutes.decrementColor();
 			}
-			if (button3.read() == LOW) { // +
+			if (buttonRight.read() == LOW) { // +
 				animatorMinutes.incrementColor();
 			}
 			break;
 		case 11: // color Seconds
-			if (button1.read() == LOW) { // -
+			if (buttonLeft.read() == LOW) { // -
 				animatorSeconds.decrementColor();
 			}
-			if (button3.read() == LOW) { // +
+			if (buttonRight.read() == LOW) { // +
 				animatorSeconds.incrementColor();
 			}
 			break;
