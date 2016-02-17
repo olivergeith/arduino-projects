@@ -213,3 +213,40 @@ uint32_t AnimatorCircle::Wheel(byte WheelPos) {
 	return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
 }
 
+int AnimatorCircle::getRed(byte WheelPos) {
+	WheelPos = 255 - WheelPos;
+	if (WheelPos < 85) {
+		return 255 - WheelPos * 3;
+	}
+	if (WheelPos < 170) {
+		WheelPos -= 85;
+		return 0;
+	}
+	WheelPos -= 170;
+	return WheelPos * 3;
+}
+int AnimatorCircle::getGreen(byte WheelPos) {
+	WheelPos = 255 - WheelPos;
+	if (WheelPos < 85) {
+		return 0;
+	}
+	if (WheelPos < 170) {
+		WheelPos -= 85;
+		return WheelPos * 3;
+	}
+	WheelPos -= 170;
+	return 255 - WheelPos * 3;
+}
+int AnimatorCircle::getBlue(byte WheelPos) {
+	WheelPos = 255 - WheelPos;
+	if (WheelPos < 85) {
+		return WheelPos * 3;
+	}
+	if (WheelPos < 170) {
+		WheelPos -= 85;
+		return 255 - WheelPos * 3;
+	}
+	WheelPos -= 170;
+	return 0;
+}
+

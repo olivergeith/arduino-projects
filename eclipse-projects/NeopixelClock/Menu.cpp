@@ -41,7 +41,7 @@ char* Menu::getCurrentMode() {
 	switch (mode) {
 	default:
 	case 0:
-		return "Push red for Menu...";
+		return "Up-Down for Menu...";
 	case 1:
 		return "Set Minute";
 	case 2:

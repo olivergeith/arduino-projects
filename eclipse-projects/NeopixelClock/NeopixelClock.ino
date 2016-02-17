@@ -28,8 +28,7 @@ DateTime nowOld;
 //   NEO_GRB     Pixels are wired for GRB bitstream, correct for neopixel stick
 //   NEO_KHZ400  400 KHz bitstream (e.g. FLORA pixels)
 //   NEO_KHZ800  800 KHz bitstream (e.g. High Density LED strip), correct for neopixel stick
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(PIXEL_COUNT, PIXEL_PIN,
-		NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(PIXEL_COUNT, PIXEL_PIN, NEO_GRB + NEO_KHZ800);
 
 // Oled Display
 int d0 = 8;
@@ -42,9 +41,11 @@ U8GLIB_SH1106_128X64 u8g(d0, d1, cs, dc, res);
 #define BUTTON_PIN_1 2
 #define BUTTON_PIN_2 3
 #define BUTTON_PIN_3 4
+#define BUTTON_PIN_4 5
 // Instantiate a Bounce object
-Bounce buttonLeft = Bounce();
+Bounce buttonUp = Bounce();
 Bounce buttonDown = Bounce();
+Bounce buttonLeft = Bounce();
 Bounce buttonRight = Bounce();
 
 Menu mode;
@@ -58,12 +59,15 @@ void setup() {
 	pinMode(BUTTON_PIN_1, INPUT_PULLUP);
 	pinMode(BUTTON_PIN_2, INPUT_PULLUP);
 	pinMode(BUTTON_PIN_3, INPUT_PULLUP);
+	pinMode(BUTTON_PIN_4, INPUT_PULLUP);
 	// After setting up the button, setup the Bounce instance :
-	buttonLeft.attach(BUTTON_PIN_1);
-	buttonLeft.interval(5); // interval in ms
+	buttonUp.attach(BUTTON_PIN_1);
+	buttonUp.interval(5); // interval in ms
 	buttonDown.attach(BUTTON_PIN_2);
 	buttonDown.interval(5); // interval in ms
-	buttonRight.attach(BUTTON_PIN_3);
+	buttonLeft.attach(BUTTON_PIN_3);
+	buttonLeft.interval(5); // interval in ms
+	buttonRight.attach(BUTTON_PIN_4);
 	buttonRight.interval(5); // interval in ms
 
 	Wire.begin();
@@ -81,11 +85,16 @@ void setup() {
 }
 
 void loop() {
+
 	// Update the Bounce instances :
+	buttonUp.update();
 	buttonLeft.update();
 	buttonDown.update();
 	buttonRight.update();
 
+	if (buttonUp.fell() == true) {
+		mode.decrement();
+	}
 	if (buttonDown.fell() == true) {
 		mode.increment();
 	}
@@ -246,32 +255,53 @@ uint32_t Wheel(byte WheelPos) {
 }
 
 void fillLCD(void) {
-	u8g.setFont(u8g_font_profont12);  // select font
 	int zeilenAbstand = 10;
 // Frame
 	u8g.drawRFrame(0, 0, 126, 64, 5);
 
-// Zeit
-	char buffer[35];  // you have to be aware of how long your data can be
-	u8g.setFont(u8g_font_profont22);  // select font
-	sprintf(buffer, "%02d:%02d:%02d", now.hour(), now.minute(), now.second());
-	u8g.drawStr(5, 18, buffer);
-// Datum
-	u8g.setFont(u8g_font_profont11);  // select font
-	sprintf(buffer, "%02d.%02d.%04d", now.day(), now.month(), now.year());
-	u8g.drawStr(5, 18 + 1 * zeilenAbstand, buffer);
-// Modus/Menu
-	u8g.drawStr(5, 20 + 2 * zeilenAbstand, mode.getCurrentMode());
+	if (mode.getCurrentModeInt() > 0) { // Menümode
+		u8g.setFont(u8g_font_profont12);  // select font
 
-// Animation Modi
-	sprintf(buffer, "Ani: %s %s %s", animatorHours.getAnimationStyleText(),
-			animatorMinutes.getAnimationStyleText(),
-			animatorSeconds.getAnimationStyleText());
-	u8g.drawStr(5, 20 + 3 * zeilenAbstand, buffer);
-// Colors
-	sprintf(buffer, "Col: %03d %03d %03d", animatorHours.getWheelColor(),
-			animatorMinutes.getWheelColor(), animatorSeconds.getWheelColor());
-	u8g.drawStr(5, 20 + 4 * zeilenAbstand, buffer);
+		u8g.drawRFrame(0, 0, 126, 15, 5);
 
+		// Modus/Menu
+		u8g.drawStr(5, 1 * zeilenAbstand, mode.getCurrentMode());
+		int off = 8;
+		// Zeit
+		char buffer[35];  // you have to be aware of how long your data can be
+		sprintf(buffer, "%02d:%02d:%02d", now.hour(), now.minute(), now.second());
+		u8g.drawStr(5, off + 2 * zeilenAbstand, buffer);
+		// Datum
+		u8g.setFont(u8g_font_profont11);  // select font
+		sprintf(buffer, "%02d.%02d.%04d", now.day(), now.month(), now.year());
+		u8g.drawStr(5, off + 3 * zeilenAbstand, buffer);
+
+		// Animation Modi
+		sprintf(buffer, "Ani: %s %s %s", animatorHours.getAnimationStyleText(), animatorMinutes.getAnimationStyleText(),
+				animatorSeconds.getAnimationStyleText());
+		u8g.drawStr(5, off + 4 * zeilenAbstand, buffer);
+		// Colors
+		sprintf(buffer, "Col: %03d %03d %03d", animatorHours.getWheelColor(), animatorMinutes.getWheelColor(),
+				animatorSeconds.getWheelColor());
+		u8g.drawStr(5, off + 5 * zeilenAbstand, buffer);
+	} else { // running Mode
+		u8g.setFont(u8g_font_profont22);  // select font
+
+		// Zeit
+		char buffer[35];  // you have to be aware of how long your data can be
+		sprintf(buffer, "%02d:%02d:%02d", now.hour(), now.minute(), now.second());
+		u8g.drawStr(15, 25, buffer);
+
+		u8g.setFont(u8g_font_profont12);  // select font
+
+		// Datum
+		u8g.setFont(u8g_font_profont11);  // select font
+		sprintf(buffer, "%02d.%02d.%04d", now.day(), now.month(), now.year());
+		u8g.drawStr(30, 40, buffer);
+
+		// Menu Hinweis
+		u8g.drawStr(5, 58, mode.getCurrentMode());
+
+	}
 }
 

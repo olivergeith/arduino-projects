@@ -30,6 +30,10 @@ public:
 	int getWheelColor(void);
 
 	char* getAnimationStyleText(void);
+	uint32_t Wheel(byte WheelPos);
+	int getRed(byte WheelPos);
+	int getGreen(byte WheelPos);
+	int getBlue(byte WheelPos);
 
 private:
 	int wheelColor;
@@ -38,7 +42,6 @@ private:
 	Style animationStyle;
 	int animationStep;
 	Adafruit_NeoPixel strip;
-	uint32_t Wheel(byte WheelPos);
 	void setPixel(int index, int wheelColor);
 	void drawStyle0(int newVal);
 	void drawStyle1(int newVal);
