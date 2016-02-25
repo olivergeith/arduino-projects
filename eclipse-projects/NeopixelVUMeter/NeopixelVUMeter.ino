@@ -32,7 +32,7 @@
 #define NOISE     10  // Noise/hum/interference in mic signal
 #define SAMPLES   60  // Length of buffer for dynamic level adjustment
 #define TOP       (N_PIXELS) // Allow dot to go slightly off scale
-#define PEAK_FALL 8  // Rate of peak falling dot
+#define SAMPLING  8  // Rate of peak falling dot
 
 byte peak = 0,      // Used for falling dot
 		dotCount = 0,      // Frame counter for delaying dot-falling speed
@@ -97,7 +97,7 @@ void loop() {
 
 // Every few frames, make the peak pixel drop by 1:
 
-	if (++dotCount >= PEAK_FALL) { //fall rate
+	if (++dotCount >= SAMPLING ) { //fall rate
 
 		if (peak > 0)
 			peak--;

@@ -30,9 +30,9 @@
 #define LED_PIN    6  // NeoPixel LED strand is connected to this pin
 #define DC_OFFSET  0  // DC offset in mic signal - if unusure, leave 0
 #define NOISE     10  // Noise/hum/interference in mic signal
-#define SAMPLES   60  // Length of buffer for dynamic level adjustment
-#define TOP       (20) // Allow dot to go slightly off scale
-#define PEAK_FALL 8  // Rate of peak falling dot
+#define SAMPLES   50  // Length of buffer for dynamic level adjustment
+#define TOP       20 // Allow dot to go slightly off scale
+#define SAMPLING  2  // Rate of peak falling dot
 
 byte peak = 0,      // Used for falling dot
 		dotCount = 0,      // Frame counter for delaying dot-falling speed
@@ -42,21 +42,20 @@ int vol[SAMPLES],       // Collection of prior volume samples
 		minLvlAvg = 0,      // For dynamic adjustment of graph low & high
 		maxLvlAvg = 512;
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(N_PIXELS, LED_PIN, NEO_GRB + NEO_KHZ800);
-int pixelColors[N_PIXELS];       // Collection of prior volume samples
-int rainbow = 0;
+int pixelColors[N_PIXELS];       // Collection of all PixelColors (Wheelcolors)
+
+float rainbow = 0;
 
 void setup() {
-
-	// This is only needed on 5V Arduinos (Uno, Leonardo, etc.).
-	// Connect 3.3V to mic AND TO AREF ON ARDUINO and enable this
-	// line.  Audio samples are 'cleaner' at 3.3V.
-	// COMMENT OUT THIS LINE FOR 3.3V ARDUINOS (FLORA, ETC.):
-	//analogReference (EXTERNAL);
-
 	memset(vol, 0, sizeof(vol));
 	strip.begin();
 	Serial.begin(9600);
 	strip.setBrightness(64);
+}
+
+int readAnalog() {
+	int n1 = analogRead(MIC_PIN);
+	return n1;
 }
 
 void loop() {
@@ -64,8 +63,8 @@ void loop() {
 	uint16_t minLvl, maxLvl;
 	int n, height;
 
-	n = analogRead(MIC_PIN);                        // Raw reading from mic
-//	Serial.println(n);
+	n = readAnalog();
+	Serial.println(n);
 	n = abs(n - 512 - DC_OFFSET); // Center on zero
 
 	n = (n <= NOISE) ? 0 : (n - NOISE);             // Remove noise/hum
@@ -83,18 +82,22 @@ void loop() {
 
 	int color = map(height, 0, TOP, 0, 255);
 //	Serial.println(height);
-	if (dotCount == PEAK_FALL) {
-//		Serial.println(color);
-		rainbow++;
-		putNewColorValue(color + rainbow);
+
+	if (dotCount == SAMPLING) {
+		rainbow += 0.2;
+		if (rainbow > 255) {
+			rainbow = 0;
+		}
+		color = color + rainbow;
+		if (color > 255)
+			color = color - 255;
+		putNewColorValue(color);
+		fillStripe();
+		//fillStripeColorfull();
+		strip.show(); // Update strip
 		dotCount = 0;
 	}
-	if (rainbow == 255) {
-		rainbow = 0;
-	}
 	dotCount++;
-	fillStripe();
-	strip.show(); // Update strip
 
 	vol[volCount] = n;                      // Save sample for dynamic leveling
 	if (++volCount >= SAMPLES)
@@ -116,9 +119,8 @@ void loop() {
 	// also lets the graph go to zero when no sound is playing):
 	if ((maxLvl - minLvl) < TOP)
 		maxLvl = minLvl + TOP;
-	minLvlAvg = (minLvlAvg * 63 + minLvl) >> 6; // Dampen min/max levels
-	maxLvlAvg = (maxLvlAvg * 63 + maxLvl) >> 6; // (fake rolling average)
-
+	minLvlAvg = (minLvlAvg * 60 + minLvl) >> 6; // Dampen min/max levels
+	maxLvlAvg = (maxLvlAvg * 60 + maxLvl) >> 6; // (fake rolling average)
 }
 
 // Input a value 0 to 255 to get a color value.
@@ -151,7 +153,7 @@ uint32_t Wheel2(byte WheelPos) {
 }
 
 void putNewColorValue(int col) {
-	for (int i = N_PIXELS; i > 0; i--) {
+	for (int i = N_PIXELS - 1; i > 0; i--) {
 		pixelColors[i] = pixelColors[i - 1];
 	}
 	pixelColors[0] = col;
@@ -159,6 +161,16 @@ void putNewColorValue(int col) {
 
 void fillStripe() {
 	for (int i = 0; i < N_PIXELS; i++) {
+		if (pixelColors[i] == 0)
+			strip.setPixelColor(i, 0, 0, 0);
+		else
+			strip.setPixelColor(i, Wheel2(pixelColors[i]));
+	}
+}
+
+void fillStripeColorfull() {
+	for (int i = 0; i < N_PIXELS; i++) {
 		strip.setPixelColor(i, Wheel2(pixelColors[i]));
 	}
 }
+
