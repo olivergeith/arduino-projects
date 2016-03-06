@@ -25,7 +25,7 @@
 
 #include <Adafruit_NeoPixel.h>
 
-#define N_PIXELS  120  // Number of pixels in strand
+#define N_PIXELS  144  // Number of pixels in strand
 #define MIC_PIN   A4  // Microphone is attached to this analog pin
 #define LED_PIN    6  // NeoPixel LED strand is connected to this pin
 #define DC_OFFSET  0  // DC offset in mic signal - if unusure, leave 0
@@ -96,6 +96,36 @@ int readAnalog() {
 int lastLevel = 0;
 
 void loop() {
+	play01();
+}
+
+int play01Color = 0;
+void play01(void) {
+	int level = readAnalog();
+	Serial.println(level);
+
+	if (dotCount == SAMPLING) {
+		int c = map(level, 0, TOP, 0, 96);
+		if (lastLevel > level) {
+			c = map(lastLevel, 0, TOP, 0, 96);
+		}
+		play01Color = play01Color + c;
+		if (play01Color > play01Color)
+			play01Color = play01Color - 255;
+		putNewColorValue(play01Color);
+		//	fillStripe();
+		fillStripeColorfull();
+		strip.show(); // Update strip
+	} else {
+		lastLevel = level;
+	}
+
+	dotCount++;
+	if (dotCount > SAMPLING)
+		dotCount = 0;
+}
+
+void play02(void) {
 	int level = readAnalog();
 	Serial.println(level);
 

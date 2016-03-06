@@ -1,13 +1,15 @@
 //This is a automatic generated file
 //Please do not modify this file
 //If you touch this file your change will be overwritten during the next build
-//This file has been generated on 2016-02-25 19:39:19
+//This file has been generated on 2016-03-05 12:49:43
 
 #include "Arduino.h"
 #include <Adafruit_NeoPixel.h>
 void setup() ;
 int readAnalog() ;
 void loop() ;
+void play01(void) ;
+void play02(void) ;
 uint32_t Wheel(byte WheelPos) ;
 uint32_t Wheel2(byte WheelPos) ;
 void putNewColorValue(int col) ;
