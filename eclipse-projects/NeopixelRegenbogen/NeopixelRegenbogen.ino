@@ -15,7 +15,7 @@
 //   NEO_GRB     Pixels are wired for GRB bitstream, correct for neopixel stick
 //   NEO_KHZ400  400 KHz bitstream (e.g. FLORA pixels)
 //   NEO_KHZ800  800 KHz bitstream (e.g. High Density LED strip), correct for neopixel stick
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(PIXEL_COUNT, PIXEL_PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel arenaStrip = Adafruit_NeoPixel(PIXEL_COUNT, PIXEL_PIN, NEO_GRB + NEO_KHZ800);
 
 // Oled Display
 int d0 = 8;
@@ -41,9 +41,9 @@ int potiPinCycles = A4;
 
 void setup() {
 //  u8g.setRot180();
-  strip.setBrightness(64);
-  strip.begin();
-  strip.show(); // Initialize all pixels to 'off'
+  arenaStrip.setBrightness(64);
+  arenaStrip.begin();
+  arenaStrip.show(); // Initialize all pixels to 'off'
 }
 
 void loop() {
@@ -51,8 +51,8 @@ void loop() {
   cycles = map(analogRead(potiPinCycles), 0, 1000, 1, 16);
 
 
-  for(int i=0; i< strip.numPixels(); i++) {
-      strip.setPixelColor(i, Wheel(( (i * 256 / strip.numPixels()*cycles) +j) ));
+  for(int i=0; i< arenaStrip.numPixels(); i++) {
+      arenaStrip.setPixelColor(i, Wheel(( (i * 256 / arenaStrip.numPixels()*cycles) +j) ));
   }
 /*
  for(int i=0; i< strip.numPixels(); i++) {
@@ -62,7 +62,7 @@ void loop() {
       strip.setPixelColor(i, 0,0,0);
   }
 */
-  strip.show();
+  arenaStrip.show();
 
  // Farbbeginn hochzählen
   j=j+dt;
@@ -86,14 +86,14 @@ void loop() {
 uint32_t Wheel(byte WheelPos) {
   WheelPos = 255 - WheelPos;
   if(WheelPos < 85) {
-    return strip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
+    return arenaStrip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
   }
   if(WheelPos < 170) {
     WheelPos -= 85;
-    return strip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
+    return arenaStrip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
   }
   WheelPos -= 170;
-  return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+  return arenaStrip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
 }
 
 

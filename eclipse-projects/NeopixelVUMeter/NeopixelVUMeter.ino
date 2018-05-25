@@ -41,7 +41,7 @@ int vol[SAMPLES],       // Collection of prior volume samples
 		lvl = 10,      // Current "dampened" audio level
 		minLvlAvg = 0,      // For dynamic adjustment of graph low & high
 		maxLvlAvg = 512;
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(N_PIXELS, LED_PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel arenaStrip = Adafruit_NeoPixel(N_PIXELS, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 void setup() {
 
@@ -52,9 +52,9 @@ void setup() {
 	//analogReference (EXTERNAL);
 
 	memset(vol, 0, sizeof(vol));
-	strip.begin();
+	arenaStrip.begin();
 	Serial.begin(9600);
-	strip.setBrightness(128);
+	arenaStrip.setBrightness(128);
 }
 
 void loop() {
@@ -82,18 +82,18 @@ void loop() {
 	// Color pixels based on rainbow gradient
 	for (i = 0; i < N_PIXELS; i++) {
 		if (i >= height)
-			strip.setPixelColor(i, 0, 0, 0);
+			arenaStrip.setPixelColor(i, 0, 0, 0);
 		else
-			strip.setPixelColor(i, Wheel(map(i, 0, strip.numPixels() - 1, 0, 255)));
+			arenaStrip.setPixelColor(i, Wheel(map(i, 0, arenaStrip.numPixels() - 1, 0, 255)));
 
 	}
 
 	// Draw peak dot
 	if (peak > 0 && peak <= N_PIXELS - 1)
-		strip.setPixelColor(peak, 255, 0, 0);
+		arenaStrip.setPixelColor(peak, 255, 0, 0);
 //		strip.setPixelColor(peak, Wheel(map(peak, 0, strip.numPixels() - 1, 30, 150)));
 
-	strip.show(); // Update strip
+	arenaStrip.show(); // Update strip
 
 // Every few frames, make the peak pixel drop by 1:
 
@@ -133,12 +133,12 @@ void loop() {
 // The colors are a transition r - g - b - back to r.
 uint32_t Wheel(byte WheelPos) {
 	if (WheelPos < 85) {
-		return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+		return arenaStrip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
 	} else if (WheelPos < 170) {
 		WheelPos -= 85;
-		return strip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
+		return arenaStrip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
 	} else {
 		WheelPos -= 170;
-		return strip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
+		return arenaStrip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
 	}
 }

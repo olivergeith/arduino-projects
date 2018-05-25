@@ -17,13 +17,13 @@
 //   NEO_GRB     Pixels are wired for GRB bitstream, correct for neopixel stick
 //   NEO_KHZ400  400 KHz bitstream (e.g. FLORA pixels)
 //   NEO_KHZ800  800 KHz bitstream (e.g. High Density LED strip), correct for neopixel stick
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(PIXEL_COUNT, PIXEL_PIN,
+Adafruit_NeoPixel arenaStrip = Adafruit_NeoPixel(PIXEL_COUNT, PIXEL_PIN,
 NEO_GRB + NEO_KHZ800);
 
 // IRReceiver
 int IR_RECV_PIN = 7;
-IRrecv irrecv(IR_RECV_PIN);
-decode_results results;
+IRrecv irReceiver(IR_RECV_PIN);
+decode_results irResults;
 String ircode="";
 
 // Oled Display
@@ -43,20 +43,20 @@ int cycles = 1; // Anzahl der Farbdurchläufe
 
 void setup() {
 	Serial.begin(9600);
-	irrecv.enableIRIn();
-	strip.setBrightness(64);
-	strip.begin();
-	strip.show(); // Initialize all pixels to 'off'
+	irReceiver.enableIRIn();
+	arenaStrip.setBrightness(64);
+	arenaStrip.begin();
+	arenaStrip.show(); // Initialize all pixels to 'off'
 }
 
 void loop() {
 
 	ircode = "";
-	if (irrecv.decode(&results)) {
-		Serial.print(results.decode_type);
+	if (irReceiver.decode(&irResults)) {
+		Serial.print(irResults.decode_type);
 		Serial.print(" - ");
-		Serial.println(results.value, DEC);
-		switch (results.value) {
+		Serial.println(irResults.value, DEC);
+		switch (irResults.value) {
 		default:
 			break;
 		case 16754775: // dt +
@@ -84,12 +84,12 @@ void loop() {
 			ircode = "cycle ++";
 			break;
 		}
-		irrecv.resume();
+		irReceiver.resume();
 	}
 
-	for (int i = 0; i < strip.numPixels(); i++) {
-		strip.setPixelColor(i,
-				Wheel(((i * 256 / strip.numPixels() * cycles) + j)));
+	for (int i = 0; i < arenaStrip.numPixels(); i++) {
+		arenaStrip.setPixelColor(i,
+				Wheel(((i * 256 / arenaStrip.numPixels() * cycles) + j)));
 	}
 	/*
 	 for(int i=0; i< strip.numPixels(); i++) {
@@ -99,7 +99,7 @@ void loop() {
 	 strip.setPixelColor(i, 0,0,0);
 	 }
 	 */
-	strip.show();
+	arenaStrip.show();
 
 	// Farbbeginn hochzählen
 	j = j + dt;
@@ -121,14 +121,14 @@ void loop() {
 uint32_t Wheel(byte WheelPos) {
 	WheelPos = 255 - WheelPos;
 	if (WheelPos < 85) {
-		return strip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
+		return arenaStrip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
 	}
 	if (WheelPos < 170) {
 		WheelPos -= 85;
-		return strip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
+		return arenaStrip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
 	}
 	WheelPos -= 170;
-	return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+	return arenaStrip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
 }
 
 void fillLCD(void) {
@@ -150,6 +150,6 @@ void fillLCD(void) {
 	u8g.setPrintPos(50, 5 * zeilenAbstand);  // set position
 	u8g.print(ircode);  //
 	u8g.setPrintPos(100, 5 * zeilenAbstand);  // set position
-	u8g.print(results.decode_type);  //
+	u8g.print(irResults.decode_type);  //
 }
 

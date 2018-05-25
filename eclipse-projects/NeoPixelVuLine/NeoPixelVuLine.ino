@@ -41,16 +41,16 @@ int vol[SAMPLES],       // Collection of prior volume samples
 		lvl = 10,      // Current "dampened" audio level
 		minLvlAvg = 0,      // For dynamic adjustment of graph low & high
 		maxLvlAvg = 512;
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(N_PIXELS, LED_PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel arenaStrip = Adafruit_NeoPixel(N_PIXELS, LED_PIN, NEO_GRB + NEO_KHZ800);
 int pixelColors[N_PIXELS];       // Collection of all PixelColors (Wheelcolors)
 
 float rainbow = 0;
 
 void setup() {
 	memset(vol, 0, sizeof(vol));
-	strip.begin();
+	arenaStrip.begin();
 	Serial.begin(9600);
-	strip.setBrightness(64);
+	arenaStrip.setBrightness(64);
 }
 
 int readAnalog() {
@@ -94,7 +94,7 @@ void loop() {
 		putNewColorValue(color);
 		fillStripe();
 		//fillStripeColorfull();
-		strip.show(); // Update strip
+		arenaStrip.show(); // Update strip
 		dotCount = 0;
 	}
 	dotCount++;
@@ -127,13 +127,13 @@ void loop() {
 // The colors are a transition r - g - b - back to r.
 uint32_t Wheel(byte WheelPos) {
 	if (WheelPos < 85) {
-		return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+		return arenaStrip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
 	} else if (WheelPos < 170) {
 		WheelPos -= 85;
-		return strip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
+		return arenaStrip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
 	} else {
 		WheelPos -= 170;
-		return strip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
+		return arenaStrip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
 	}
 }
 
@@ -142,14 +142,14 @@ uint32_t Wheel(byte WheelPos) {
 uint32_t Wheel2(byte WheelPos) {
 	WheelPos = 255 - WheelPos;
 	if (WheelPos < 85) {
-		return strip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
+		return arenaStrip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
 	}
 	if (WheelPos < 170) {
 		WheelPos -= 85;
-		return strip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
+		return arenaStrip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
 	}
 	WheelPos -= 170;
-	return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+	return arenaStrip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
 }
 
 void putNewColorValue(int col) {
@@ -162,15 +162,15 @@ void putNewColorValue(int col) {
 void fillStripe() {
 	for (int i = 0; i < N_PIXELS; i++) {
 		if (pixelColors[i] == 0)
-			strip.setPixelColor(i, 0, 0, 0);
+			arenaStrip.setPixelColor(i, 0, 0, 0);
 		else
-			strip.setPixelColor(i, Wheel2(pixelColors[i]));
+			arenaStrip.setPixelColor(i, Wheel2(pixelColors[i]));
 	}
 }
 
 void fillStripeColorfull() {
 	for (int i = 0; i < N_PIXELS; i++) {
-		strip.setPixelColor(i, Wheel2(pixelColors[i]));
+		arenaStrip.setPixelColor(i, Wheel2(pixelColors[i]));
 	}
 }
 
