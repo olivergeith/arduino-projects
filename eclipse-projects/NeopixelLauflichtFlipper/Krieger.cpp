@@ -34,6 +34,38 @@ void Krieger::draw() {
 
 }
 
+void Krieger::drawFadein() {
+	animationStep = animationStep + 2;
+
+	for (int i = 0; i < strip.numPixels(); i++) {
+		strip.setPixelColor(i, getColorForIndex(i, animationStep));
+	}
+
+	if (animationStep >= 300) {
+		animationStep = 0;
+	}
+
+}
+
+uint32_t Krieger::getColorForIndex(int index, int brightness) {
+	// brightness 0-255
+	int maxRed = 255;
+	int maxBlue = 255;
+	if (brightness < 0)
+		brightness = 0;
+	if (brightness > 255)
+		brightness = 255;
+
+	int blue = (maxBlue * brightness) / 255;
+	int red = (maxRed * brightness) / 255;
+
+	if (index == 10 || index == 9) {
+		return strip.Color(0, 0, blue);
+	}
+
+	return strip.Color(red, 0, 0); // rot
+}
+
 uint32_t Krieger::getColorForIndex(int index) {
 	if (index == 10 || index == 9) {
 		return strip.Color(0, 0, 255);

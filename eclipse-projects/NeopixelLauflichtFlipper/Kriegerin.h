@@ -15,6 +15,7 @@ public:
 	virtual ~Kriegerin();
 
 	void draw();
+	void drawFadein();
 
 	bool animating;
 	int animationStep;
@@ -26,6 +27,7 @@ private:
 	uint32_t Wheel(byte WheelPos);
 
 	uint32_t getColorForIndex(int index);
+	uint32_t getColorForIndex(int index, int brightness);
 
 };
 

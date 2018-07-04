@@ -17,22 +17,22 @@
 //   NEO_GRB     Pixels are wired for GRB bitstream, correct for neopixel stick
 //   NEO_KHZ400  400 KHz bitstream (e.g. FLORA pixels)
 //   NEO_KHZ800  800 KHz bitstream (e.g. High Density LED strip), correct for neopixel stick
-Adafruit_NeoPixel arenaStrip = Adafruit_NeoPixel(77, 3, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel nasaStrip = Adafruit_NeoPixel(77, 3, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel kriegerinStrip = Adafruit_NeoPixel(10, 4, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel monsterStrip = Adafruit_NeoPixel(60, 5, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel monsterStrip = Adafruit_NeoPixel(64, 5, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel kriegerStrip = Adafruit_NeoPixel(18, 6, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel gargoylStrip = Adafruit_NeoPixel(2, 7, NEO_GRB + NEO_KHZ800);
 
-Arena arenaArea(arenaStrip);
+Arena nasaArea(nasaStrip);
 Kriegerin kriegerinArea(kriegerinStrip);
 Monster monsterArea(monsterStrip);
 Krieger kriegerArea(kriegerStrip);
 Gargoyl garoylArea(gargoylStrip);
 
 void setup() {
-	arenaStrip.setBrightness(200);
-	arenaStrip.begin();
-	arenaStrip.show(); // Initialize all pixels to 'off'
+	nasaStrip.setBrightness(200);
+	nasaStrip.begin();
+	nasaStrip.show(); // Initialize all pixels to 'off'
 
 	kriegerinStrip.setBrightness(200);
 	kriegerinStrip.begin();
@@ -53,13 +53,13 @@ void setup() {
 }
 
 void loop() {
-	arenaArea.draw();
-	kriegerinArea.draw();
+	nasaArea.draw();
+	kriegerinArea.drawFadein();
 	monsterArea.draw();
-	kriegerArea.draw();
+	kriegerArea.drawFadein();
 	garoylArea.draw();
 
-	arenaStrip.show();
+	nasaStrip.show();
 	kriegerinStrip.show();
 	monsterStrip.show();
 	kriegerStrip.show();
@@ -72,13 +72,13 @@ void loop() {
 uint32_t Wheel(byte WheelPos) {
 	WheelPos = 255 - WheelPos;
 	if (WheelPos < 85) {
-		return arenaStrip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
+		return nasaStrip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
 	}
 	if (WheelPos < 170) {
 		WheelPos -= 85;
-		return arenaStrip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
+		return nasaStrip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
 	}
 	WheelPos -= 170;
-	return arenaStrip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+	return nasaStrip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
 }
 

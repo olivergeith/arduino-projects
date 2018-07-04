@@ -67,7 +67,12 @@ void Monster::draw() {
 		}
 	}
 
-	if (animationStep == 150) {
+	strip.setPixelColor(60, strip.Color(animationStep * 2, 0, 0));
+	strip.setPixelColor(61, strip.Color(animationStep * 2, 0, 0));
+	strip.setPixelColor(62, strip.Color(animationStep * 2, 0, 0));
+	strip.setPixelColor(63, strip.Color(animationStep * 2, 0, 0));
+
+	if (animationStep == 120) {
 		animationStep = 0;
 	}
 
@@ -75,13 +80,16 @@ void Monster::draw() {
 
 uint32_t Monster::getColorForIndex(int index) {
 	if (index <= 5) {
-		return strip.Color(200, 0, 200); // rot
+		return strip.Color(240, 0, 240); // lila
 	}
 	if (index >= 55) {
-		return strip.Color(200, 0, 200); // rot
+		return strip.Color(240, 0, 240); // lila
+	}
+	if (index >= 60) {
+		return strip.Color(240, 0, 0); // rot
 	}
 
-	return strip.Color(0, 64, 200); // rot
+	return strip.Color(0, 64, 240); // blau
 }
 
 // Input a value 0 to 255 to get a color value.

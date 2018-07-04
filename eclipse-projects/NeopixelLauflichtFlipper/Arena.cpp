@@ -37,18 +37,20 @@ void Arena::draw() {
 }
 
 uint32_t Arena::getColorForIndex(int index) {
+	uint32_t white = strip.Color(230, 230, 230);
+
 	if (index >= 5 && index <= 6) {
-		return strip.Color(200, 200, 200);
+		return white;
 	}
 
 	if (index >= 30 && index <= 50) {
-		return strip.Color(200, 200, 200);
+		return white;
 	}
 	if (index >= 73) {
-		return strip.Color(200, 200, 200);
+		return white;
 	}
 
-	return strip.Color(200, 32, 0); // rot
+	return strip.Color(250, 80, 0); // rot
 }
 
 // Input a value 0 to 255 to get a color value.
