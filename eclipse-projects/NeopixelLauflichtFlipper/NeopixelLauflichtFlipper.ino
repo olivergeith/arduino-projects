@@ -23,7 +23,7 @@ Adafruit_NeoPixel monsterStrip = Adafruit_NeoPixel(64, 5, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel kriegerStrip = Adafruit_NeoPixel(18, 6, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel gargoylStrip = Adafruit_NeoPixel(2, 7, NEO_GRB + NEO_KHZ800);
 
-Arena nasaArea(nasaStrip);
+Arena nasaLogoArea(nasaStrip);
 Kriegerin kriegerinArea(kriegerinStrip);
 Monster monsterArea(monsterStrip);
 Krieger kriegerArea(kriegerStrip);
@@ -53,7 +53,7 @@ void setup() {
 }
 
 void loop() {
-	nasaArea.draw();
+	nasaLogoArea.draw();
 	kriegerinArea.drawFadein();
 	monsterArea.draw();
 	kriegerArea.drawFadein();

@@ -5,7 +5,7 @@
 
 #include <Adafruit_NeoPixel.h>
 #include "Nasa.h"
-#include "Williams.h"
+#include "Shuttle.h"
 
 // Parameter 1 = number of pixels in strip,  neopixel stick has 8
 // Parameter 2 = pin number (most are valid)
@@ -17,10 +17,13 @@
 Adafruit_NeoPixel nasaStrip = Adafruit_NeoPixel(39, 7, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel williamsStrip = Adafruit_NeoPixel(20, 6, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel shuttleStrip = Adafruit_NeoPixel(21, 5, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel spaceShuttleStrip = Adafruit_NeoPixel(10, 4, NEO_GRB + NEO_KHZ800);
 
-Nasa nasaArea(nasaStrip);
-Nasa williamsArea(williamsStrip);
-Nasa shuttleArea(shuttleStrip);
+Nasa nasaLogoArea(nasaStrip);
+Nasa williamsLogoArea(williamsStrip);
+Nasa shuttleLogoArea(shuttleStrip);
+
+Shuttle spaceShuttleArea(spaceShuttleStrip);
 
 int millies = 0;
 int deltaMillies = 10;
@@ -36,6 +39,9 @@ void setup() {
 	shuttleStrip.setBrightness(255);
 	shuttleStrip.begin();
 	shuttleStrip.show(); // Initialize all pixels to 'off'
+	spaceShuttleStrip.setBrightness(255);
+	spaceShuttleStrip.begin();
+	spaceShuttleStrip.show(); // Initialize all pixels to 'off'
 
 }
 
@@ -46,35 +52,52 @@ void loop() {
 		millies = 0;
 
 	drawNasa();
+	drawSpaceShuttle();
 
 	delay(deltaMillies);
 }
 
 void drawNasa() {
 	if (millies == 0) {
-		nasaArea.init();
-		williamsArea.init();
-		shuttleArea.init();
+		nasaLogoArea.init();
+		williamsLogoArea.init();
+		shuttleLogoArea.init();
 	} else if (millies < 4000) {
-		nasaArea.drawLauflicht(millies);
-		williamsArea.drawLauflicht(millies);
-		shuttleArea.drawLauflicht(millies);
+		nasaLogoArea.drawLauflicht(millies);
+		williamsLogoArea.drawLauflicht(millies);
+		shuttleLogoArea.drawLauflicht(millies);
 	} else if (millies == 4000) {
-		nasaArea.init();
-		williamsArea.init();
-		shuttleArea.init();
+		nasaLogoArea.init();
+		williamsLogoArea.init();
+		shuttleLogoArea.init();
 	} else if (millies < 8000) {
-		nasaArea.drawEinblenden(millies);
-		williamsArea.drawEinblendenRedBlue(millies);
-		shuttleArea.drawEinblendenRedBlue(millies);
+		nasaLogoArea.drawEinblenden(millies);
+		williamsLogoArea.drawEinblendenRedBlue(millies);
+		shuttleLogoArea.drawEinblendenRedBlue(millies);
 	} else if (millies == 8000) {
-		nasaArea.init();
-		williamsArea.init();
-		shuttleArea.init();
+		nasaLogoArea.init();
+		williamsLogoArea.init();
+		shuttleLogoArea.init();
 	} else {
-		nasaArea.drawBlitzeNasa(millies);
-		williamsArea.drawBlitzeWilliams(millies);
-		shuttleArea.drawBlitzeWilliams(millies);
+		nasaLogoArea.drawBlitzeNasa(millies);
+		williamsLogoArea.drawBlitzeWilliams(millies);
+		shuttleLogoArea.drawBlitzeWilliams(millies);
+	}
+}
+
+void drawSpaceShuttle() {
+	if (millies == 0) {
+		spaceShuttleArea.init();
+	} else if (millies < 4000) {
+		spaceShuttleArea.drawLauflicht(millies);
+	} else if (millies == 4000) {
+		spaceShuttleArea.init();
+	} else if (millies < 8000) {
+		spaceShuttleArea.drawEinblenden(millies);
+	} else if (millies == 8000) {
+		spaceShuttleArea.init();
+	} else {
+		spaceShuttleArea.drawEinblendenRedBlue(millies);
 	}
 }
 

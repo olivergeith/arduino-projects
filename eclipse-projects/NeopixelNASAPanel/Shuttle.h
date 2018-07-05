@@ -1,25 +1,23 @@
 /*
- * Nasa.h
+ * Shuttle.h
  *
  *  Created on: 11.02.2016
  *      Author: Oliver
  */
 
-#ifndef NASA_H_
-#define NASA_H_
+#ifndef SHUTTLE_H_
+#define SHUTTLE_H_
 #include <Adafruit_NeoPixel.h>
 
-class Nasa {
+class Shuttle {
 public:
-	Nasa(Adafruit_NeoPixel strip);
-	virtual ~Nasa();
+	Shuttle(Adafruit_NeoPixel strip);
+	virtual ~Shuttle();
 
 	void init();
 	void drawLauflicht(int millies);
 	void drawEinblenden(int millies);
 	void drawEinblendenRedBlue(int millies);
-	void drawBlitzeNasa(int millies);
-	void drawBlitzeWilliams(int millies);
 
 	bool animating;
 	int animationStep;

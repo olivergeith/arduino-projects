@@ -70,36 +70,6 @@ void Shuttle::drawEinblendenRedBlue(int millies) {
 	strip.show();
 }
 
-void Shuttle::drawBlitzeShuttle(int millies) {
-	ms = millies;
-	if (ms % 10 == 0) {
-		animationStep++;
-		if (animationStep == 12)
-			animationStep = 0;
-		for (int i = 0; i < strip.numPixels(); i++) {
-			if (animationStep < strip.numPixels()) {
-				strip.setPixelColor(i, getColorOrangeBlue(animationStep * 255 / strip.numPixels(), i));
-			}
-		}
-	}
-	strip.show();
-}
-
-void Shuttle::drawBlitzeWilliams(int millies) {
-	ms = millies;
-	if (ms % 10 == 0) {
-		animationStep++;
-		if (animationStep == 12)
-			animationStep = 0;
-		for (int i = 0; i < strip.numPixels(); i++) {
-			if (animationStep < strip.numPixels()) {
-				strip.setPixelColor(i, getColorOrange(animationStep * 255 / strip.numPixels()));
-			}
-		}
-	}
-	strip.show();
-}
-
 uint32_t Shuttle::getColorBlue(int brightness) {
 	int b = brightness;
 	int r = 0; //255 - brightness;
