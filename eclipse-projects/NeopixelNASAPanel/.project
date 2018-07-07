@@ -46,10 +46,5 @@
 			<type>2</type>
 			<location>C:/dataP/ws_git/arduino-projects/libraries/Adafruit_NeoPixel</location>
 		</link>
-		<link>
-			<name>libraries/U8glib</name>
-			<type>2</type>
-			<location>C:/dataP/ws_git/arduino-projects/libraries/U8glib</location>
-		</link>
 	</linkedResources>
 </projectDescription>

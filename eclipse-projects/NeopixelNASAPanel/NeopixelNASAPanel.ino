@@ -18,12 +18,15 @@ Adafruit_NeoPixel nasaStrip = Adafruit_NeoPixel(39, 7, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel williamsStrip = Adafruit_NeoPixel(20, 6, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel shuttleStrip = Adafruit_NeoPixel(21, 5, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel spaceShuttleStrip = Adafruit_NeoPixel(10, 4, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel playfieldTopStrip = Adafruit_NeoPixel(31, 3, NEO_GRB + NEO_KHZ800);
 
 Nasa nasaLogoArea(nasaStrip);
 Nasa williamsLogoArea(williamsStrip);
 Nasa shuttleLogoArea(shuttleStrip);
 
 Shuttle spaceShuttleArea(spaceShuttleStrip);
+
+Nasa playfieldTopArea(playfieldTopStrip);
 
 int millies = 0;
 int deltaMillies = 10;
@@ -42,6 +45,9 @@ void setup() {
 	spaceShuttleStrip.setBrightness(255);
 	spaceShuttleStrip.begin();
 	spaceShuttleStrip.show(); // Initialize all pixels to 'off'
+	playfieldTopStrip.setBrightness(255);
+	playfieldTopStrip.begin();
+	playfieldTopStrip.show(); // Initialize all pixels to 'off'
 
 }
 
@@ -52,8 +58,8 @@ void loop() {
 		millies = 0;
 
 	drawNasa();
-	drawSpaceShuttle();
-
+	drawSpaceShuttleRamp();
+	drawPlayfield();
 	delay(deltaMillies);
 }
 
@@ -63,9 +69,9 @@ void drawNasa() {
 		williamsLogoArea.init();
 		shuttleLogoArea.init();
 	} else if (millies < 4000) {
-		nasaLogoArea.drawLauflicht(millies);
-		williamsLogoArea.drawLauflicht(millies);
-		shuttleLogoArea.drawLauflicht(millies);
+		nasaLogoArea.drawLauflichtBlau(millies);
+		williamsLogoArea.drawLauflichtBlau(millies);
+		shuttleLogoArea.drawLauflichtBlau(millies);
 	} else if (millies == 4000) {
 		nasaLogoArea.init();
 		williamsLogoArea.init();
@@ -88,16 +94,50 @@ void drawNasa() {
 void drawSpaceShuttle() {
 	if (millies == 0) {
 		spaceShuttleArea.init();
-	} else if (millies < 4000) {
-		spaceShuttleArea.drawLauflicht(millies);
-	} else if (millies == 4000) {
+	} else if (millies < 7000) {
+		spaceShuttleArea.drawLauflichtBlau(millies);
+	} else if (millies == 7000) {
 		spaceShuttleArea.init();
 	} else if (millies < 8000) {
-		spaceShuttleArea.drawEinblenden(millies);
+		spaceShuttleArea.drawLauflichtRot(millies);
+//		spaceShuttleArea.drawEinblenden(millies);
 	} else if (millies == 8000) {
 		spaceShuttleArea.init();
 	} else {
+//		spaceShuttleArea.drawLauflichtWeiss(millies);
 		spaceShuttleArea.drawEinblendenRedBlue(millies);
 	}
 }
 
+void drawSpaceShuttleRamp() {
+	if (millies == 0) {
+		spaceShuttleArea.init();
+	} else
+		spaceShuttleArea.drawLauflichtBlau(millies);
+}
+
+void drawPlayfield() {
+	if (millies == 0) {
+		playfieldTopArea.init();
+	} else {
+		playfieldTopArea.drawLauflichtBlauBuildingUp(millies);
+	}
+}
+/*
+ void drawPlayfield() {
+ if (millies == 0) {
+ playfieldTopArea.init();
+ } else if (millies < 5000) {
+ playfieldTopArea.drawLauflichtBlauBuildingUp(millies);
+ } else if (millies == 5000) {
+ playfieldTopArea.init();
+ } else if (millies < 7500) {
+ playfieldTopArea.drawEinblenden(millies);
+ } else if (millies == 7500) {
+ playfieldTopArea.init();
+ } else {
+ //		spaceShuttleArea.drawLauflichtWeiss(millies);
+ playfieldTopArea.drawEinblendenRedBlue(millies);
+ }
+ }
+ */

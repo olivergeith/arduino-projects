@@ -15,12 +15,16 @@ public:
 	virtual ~Shuttle();
 
 	void init();
-	void drawLauflicht(int millies);
+	void drawLauflichtBlauSchneller(int millies);
+	void drawLauflichtBlau(int millies);
+	void drawLauflichtRot(int millies);
+	void drawLauflichtWeiss(int millies);
 	void drawEinblenden(int millies);
 	void drawEinblendenRedBlue(int millies);
 
 	bool animating;
 	int animationStep;
+	int speed;
 
 private:
 	int delta = 1;
@@ -30,6 +34,8 @@ private:
 	uint32_t Wheel(byte WheelPos);
 
 	uint32_t getColorBlue(int index);
+	uint32_t getColorRed(int index);
+	uint32_t getColorWhite(int index);
 	uint32_t getColorRedToBlue(int index);
 	uint32_t getColorOrange(int brightness);
 	uint32_t getColorOrangeBlue(int brightness, int index);

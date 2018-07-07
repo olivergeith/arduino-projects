@@ -9,8 +9,7 @@
 
 Nasa::Nasa(Adafruit_NeoPixel strip) {
 	this->strip = strip;
-	animating = false;
-	animationStep = 0;
+	init();
 }
 
 Nasa::~Nasa() {
@@ -18,10 +17,12 @@ Nasa::~Nasa() {
 }
 
 void Nasa::init() {
+	animating = false;
 	animationStep = 0;
+	max = strip.numPixels();
 }
 
-void Nasa::drawLauflicht(int millies) {
+void Nasa::drawLauflichtBlau(int millies) {
 	ms = millies;
 	if (ms % 50 == 0) {
 		animationStep++;
@@ -33,6 +34,30 @@ void Nasa::drawLauflicht(int millies) {
 			} else {
 				strip.setPixelColor(i, 0, 0, 0);
 			}
+		}
+	}
+	strip.show();
+}
+
+void Nasa::drawLauflichtBlauBuildingUp(int millies) {
+	ms = millies;
+	if (ms % 10 == 0) {
+		animationStep++;
+		if (animationStep == max) {
+			animationStep = 0;
+			max--;
+			if (max == 0)
+				max = strip.numPixels();
+		}
+		for (int i = 0; i < max; i++) {
+			if (i == animationStep) {
+				strip.setPixelColor(i, getColorRed(255));
+			} else {
+				strip.setPixelColor(i, 0, 0, 0);
+			}
+		}
+		for (int i = max; i < strip.numPixels(); i++) {
+			strip.setPixelColor(i, getColorBlue(255));
 		}
 	}
 	strip.show();
@@ -104,6 +129,10 @@ uint32_t Nasa::getColorBlue(int brightness) {
 	int b = brightness;
 	int r = 0; //255 - brightness;
 	return strip.Color(r, 0, b);
+}
+
+uint32_t Nasa::getColorRed(int brightness) {
+	return strip.Color(brightness, 0, 0);
 }
 
 uint32_t Nasa::getColorRedToBlue(int brightness) {
