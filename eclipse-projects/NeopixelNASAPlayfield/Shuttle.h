@@ -15,19 +15,16 @@ public:
 	virtual ~Shuttle();
 
 	void init();
-	void drawLauflichtBlauSchneller(int millies);
 	void drawShuttleLauflichtBlau(int millies);
-	void drawLauflichtRot(int millies);
-	void drawLauflichtWeiss(int millies);
-	void drawEinblenden(int millies);
 	void drawEinblendenRedBlue(int millies);
+	void drawTriebwerk(int millies);
+	void drawTriebwerkLauflicht(int millies);
 
-	bool animating;
 	int animationStep;
-	int speed;
-
+	boolean flashOn;
+	int twSteep;
+	int steps;
 private:
-	int delta = 1;
 	int ms = 0;
 
 	Adafruit_NeoPixel strip;

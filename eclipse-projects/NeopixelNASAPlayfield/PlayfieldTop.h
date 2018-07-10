@@ -1,44 +1,40 @@
 /*
- * Shuttle.h
+ * PlayfieldTop.h
  *
  *  Created on: 11.02.2016
  *      Author: Oliver
  */
 
-#ifndef SHUTTLE_H_
-#define SHUTTLE_H_
+#ifndef PLAYFIELD_TOP_H_
+#define PLAYFIELD_TOP_H_
 #include <Adafruit_NeoPixel.h>
 
-class Shuttle {
+class PlayfieldTop {
 public:
-	Shuttle(Adafruit_NeoPixel strip);
-	virtual ~Shuttle();
+	PlayfieldTop(Adafruit_NeoPixel strip);
+	virtual ~PlayfieldTop();
 
 	void init();
-	void drawLauflichtBlauSchneller(int millies);
-	void drawShuttleLauflichtBlau(int millies);
-	void drawLauflichtRot(int millies);
-	void drawLauflichtWeiss(int millies);
+	void drawLauflichtBlau(int millies);
+	void drawLauflichtBlauBuildingUp(int millies);
+
 	void drawEinblenden(int millies);
 	void drawEinblendenRedBlue(int millies);
-
-	bool animating;
-	int animationStep;
-	int speed;
-
-private:
+	void drawAllRed();
+	int max;
 	int delta = 1;
 	int ms = 0;
-
-	Adafruit_NeoPixel strip;
+	bool animating;
+	int animationStep;
 	uint32_t Wheel(byte WheelPos);
-
 	uint32_t getColorBlue(int index);
 	uint32_t getColorRed(int index);
-	uint32_t getColorWhite(int index);
 	uint32_t getColorRedToBlue(int index);
 	uint32_t getColorOrange(int brightness);
 	uint32_t getColorOrangeBlue(int brightness, int index);
+
+private:
+	Adafruit_NeoPixel strip;
 
 };
 

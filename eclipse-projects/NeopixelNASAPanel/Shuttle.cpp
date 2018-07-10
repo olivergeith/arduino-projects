@@ -47,7 +47,7 @@ void Shuttle::drawLauflichtBlauSchneller(int millies) {
 	strip.show();
 }
 
-void Shuttle::drawLauflichtBlau(int millies) {
+void Shuttle::drawShuttleLauflichtBlau(int millies) {
 	ms = millies;
 	if (ms % 50 == 0) {
 		animationStep++;

@@ -20,18 +20,22 @@ Adafruit_NeoPixel shuttleStrip = Adafruit_NeoPixel(21, 5, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel spaceShuttleStrip = Adafruit_NeoPixel(10, 4, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel playfieldTopStrip = Adafruit_NeoPixel(31, 3, NEO_GRB + NEO_KHZ800);
 
+const int flashPin = 2;     // the number of the pushbutton pin
+
 Nasa nasaLogoArea(nasaStrip);
 Nasa williamsLogoArea(williamsStrip);
 Nasa shuttleLogoArea(shuttleStrip);
-
 Shuttle spaceShuttleArea(spaceShuttleStrip);
-
 Nasa playfieldTopArea(playfieldTopStrip);
 
 int millies = 0;
 int deltaMillies = 10;
+int flasherState = 0;
 
 void setup() {
+
+	pinMode(flashPin, INPUT_PULLUP);
+
 	millies = 0;
 	nasaStrip.setBrightness(255);
 	nasaStrip.begin();
@@ -54,12 +58,14 @@ void setup() {
 void loop() {
 	millies = millies + deltaMillies;
 
+	flasherState = digitalRead(flashPin);
+
 	if (millies == 10000)
 		millies = 0;
 
 	drawNasa();
 	drawSpaceShuttleRamp();
-	drawPlayfield();
+	drawPlayfield(flasherState);
 	delay(deltaMillies);
 }
 
@@ -95,7 +101,7 @@ void drawSpaceShuttle() {
 	if (millies == 0) {
 		spaceShuttleArea.init();
 	} else if (millies < 7000) {
-		spaceShuttleArea.drawLauflichtBlau(millies);
+		spaceShuttleArea.drawShuttleLauflichtBlau(millies);
 	} else if (millies == 7000) {
 		spaceShuttleArea.init();
 	} else if (millies < 8000) {
@@ -113,14 +119,18 @@ void drawSpaceShuttleRamp() {
 	if (millies == 0) {
 		spaceShuttleArea.init();
 	} else
-		spaceShuttleArea.drawLauflichtBlau(millies);
+		spaceShuttleArea.drawShuttleLauflichtBlau(millies);
 }
 
-void drawPlayfield() {
-	if (millies == 0) {
-		playfieldTopArea.init();
+void drawPlayfield(int buttonState) {
+	if (buttonState == HIGH) {
+		if (millies == 0) {
+			playfieldTopArea.init();
+		} else {
+			playfieldTopArea.drawLauflichtBlauBuildingUp(millies);
+		}
 	} else {
-		playfieldTopArea.drawLauflichtBlauBuildingUp(millies);
+		playfieldTopArea.drawBlitzeWilliams(millies);
 	}
 }
 /*
