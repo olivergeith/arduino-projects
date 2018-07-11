@@ -7,6 +7,7 @@
 
 #include "PlayfieldTop.h"
 #include "Shuttle.h"
+#include "LegLight.h"
 
 // Parameter 1 = number of pixels in strip,  neopixel stick has 8
 // Parameter 2 = pin number (most are valid)
@@ -17,11 +18,13 @@
 //   NEO_KHZ800  800 KHz bitstream (e.g. High Density LED strip), correct for neopixel stick
 Adafruit_NeoPixel spaceShuttleStrip = Adafruit_NeoPixel(14, 7, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel playfieldTopStrip = Adafruit_NeoPixel(31, 6, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel legStrip = Adafruit_NeoPixel(6, 5, NEO_GRB + NEO_KHZ800);
 
 const int flashPin = 2;     // the number of the pushbutton pin
 
 Shuttle spaceShuttleArea(spaceShuttleStrip);
 PlayfieldTop playfieldTopArea(playfieldTopStrip);
+LegLight legArea(legStrip);
 
 int millies = 0;
 int deltaMillies = 2;
@@ -37,6 +40,9 @@ void setup() {
 	playfieldTopStrip.setBrightness(255);
 	playfieldTopStrip.begin();
 	playfieldTopStrip.show(); // Initialize all pixels to 'off'
+	legStrip.setBrightness(255);
+	legStrip.begin();
+	legStrip.show(); // Initialize all pixels to 'off'
 
 }
 
@@ -49,6 +55,7 @@ void loop() {
 
 	drawSpaceShuttleRamp();
 	drawPlayfield(flasherState);
+	drawLeg();
 	delay(deltaMillies);
 }
 
@@ -67,6 +74,18 @@ void drawPlayfield(int buttonState) {
 		playfieldTopArea.init();
 	} else {
 		playfieldTopArea.drawLauflichtBlauBuildingUp(millies);
+	}
+}
+
+void drawLeg() {
+	if (millies == 0 || millies == 7500) {
+		legArea.init();
+	} else if (millies < 7500) {
+		// legArea.drawLauflicht(millies, 0, 0, 255);
+		// legArea.drawLauflicht2(millies);
+		legArea.drawEinblenden(millies);
+	} else {
+		legArea.drawEinblendenRedBlue(millies);
 	}
 }
 
