@@ -18,13 +18,15 @@
 //   NEO_KHZ800  800 KHz bitstream (e.g. High Density LED strip), correct for neopixel stick
 Adafruit_NeoPixel spaceShuttleStrip = Adafruit_NeoPixel(14, 7, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel playfieldTopStrip = Adafruit_NeoPixel(31, 6, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel legStrip = Adafruit_NeoPixel(6, 5, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel legStrip1 = Adafruit_NeoPixel(6, 5, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel legStrip2 = Adafruit_NeoPixel(6, 4, NEO_GRB + NEO_KHZ800);
 
 const int flashPin = 2;     // the number of the pushbutton pin
 
 Shuttle spaceShuttleArea(spaceShuttleStrip);
 PlayfieldTop playfieldTopArea(playfieldTopStrip);
-LegLight legArea(legStrip);
+LegLight legArea1(legStrip1);
+LegLight legArea2(legStrip2);
 
 int millies = 0;
 int deltaMillies = 2;
@@ -40,9 +42,12 @@ void setup() {
 	playfieldTopStrip.setBrightness(255);
 	playfieldTopStrip.begin();
 	playfieldTopStrip.show(); // Initialize all pixels to 'off'
-	legStrip.setBrightness(255);
-	legStrip.begin();
-	legStrip.show(); // Initialize all pixels to 'off'
+	legStrip1.setBrightness(255);
+	legStrip1.begin();
+	legStrip1.show(); // Initialize all pixels to 'off'
+	legStrip2.setBrightness(255);
+	legStrip2.begin();
+	legStrip2.show(); // Initialize all pixels to 'off'
 
 }
 
@@ -55,7 +60,7 @@ void loop() {
 
 	drawSpaceShuttleRamp();
 	drawPlayfield(flasherState);
-	drawLeg();
+	drawLeg2();
 	delay(deltaMillies);
 }
 
@@ -78,14 +83,63 @@ void drawPlayfield(int buttonState) {
 }
 
 void drawLeg() {
-	if (millies == 0 || millies == 7500) {
-		legArea.init();
+	if (millies == 0 || millies == 7500 || millies == 5000) {
+		legArea1.init();
+		legArea2.init();
+	} else if (millies < 5000) {
+		legArea1.drawEinblenden(millies);
+		legArea2.drawEinblenden(millies);
 	} else if (millies < 7500) {
-		// legArea.drawLauflicht(millies, 0, 0, 255);
-		// legArea.drawLauflicht2(millies);
-		legArea.drawEinblenden(millies);
+		legArea1.drawLauflicht(millies);
+		legArea2.drawLauflicht(millies);
 	} else {
-		legArea.drawEinblendenRedBlue(millies);
+		legArea1.drawEinblendenRedBlue(millies);
+		legArea2.drawEinblendenBlueRed(millies);
 	}
+}
+void drawLeg2() {
+	if (millies == 0 || millies == 6000) {
+		legArea1.init();
+		legArea2.init();
+	} else if (millies < 6000) {
+		legArea1.drawEinblenden(millies);
+		legArea2.drawEinblenden(millies);
+	} else {
+		legArea1.drawLauflicht(millies);
+		legArea2.drawLauflicht(millies);
+	}
+}
+
+int mode = 0;
+
+void drawLeg3() {
+	if (millies == 0 || millies == 5000) {
+		legArea1.init();
+		legArea2.init();
+		mode = random(5);
+	}
+	switch (mode) {
+	case 0:
+		legArea1.drawEinblenden(millies);
+		legArea2.drawEinblenden(millies);
+		break;
+	case 1:
+		legArea1.drawRandomColors(millies);
+		legArea2.drawRandomColors(millies);
+		break;
+	case 2:
+		legArea1.drawLauflicht(millies);
+		legArea2.drawLauflicht(millies);
+		break;
+	case 3:
+		legArea1.drawEinblendenBlueRed(millies);
+		legArea2.drawEinblendenRedBlue(millies);
+		break;
+	case 4:
+		legArea1.drawWheel(millies);
+		legArea2.drawWheel(millies);
+		break;
+	}
+
 }
 

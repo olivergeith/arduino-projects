@@ -19,38 +19,10 @@ LegLight::~LegLight() {
 void LegLight::init() {
 	animating = false;
 	animationStep = 0;
+	lauflichtStep = 0;
+	laufLichtColor = getColorRed(255);
 	max = strip.numPixels();
-}
 
-void LegLight::drawLauflicht(int millies, int r, int g, int b) {
-	ms = millies;
-	if (ms % 40 == 0) {
-		animationStep++;
-		if (animationStep == 30)
-			animationStep = 0;
-		for (int i = 0; i < strip.numPixels(); i++) {
-			if (i == animationStep) {
-				strip.setPixelColor(i, 255, 0, 0);
-			} else {
-				strip.setPixelColor(i, r, g, b);
-			}
-		}
-	}
-	strip.show();
-}
-
-void LegLight::drawLauflicht2(int millies) {
-	int steps = 20;
-	ms = millies;
-	if (ms % 10 == 0) {
-		animationStep++;
-		if (animationStep == 255)
-			animationStep = 0;
-		for (int i = 0; i < strip.numPixels(); i++) {
-			strip.setPixelColor(i, Wheel(animationStep));
-		}
-	}
-	strip.show();
 }
 
 void LegLight::drawEinblenden(int millies) {
@@ -66,6 +38,20 @@ void LegLight::drawEinblenden(int millies) {
 			} else {
 				strip.setPixelColor(i, getColorBlue(255));
 			}
+		}
+	}
+	strip.show();
+}
+
+void LegLight::drawWheel(int millies) {
+	int steps = 20;
+	ms = millies;
+	if (ms % 60 == 0) {
+		animationStep++;
+		if (animationStep == 70)
+			animationStep = 0;
+		for (int i = 0; i < strip.numPixels(); i++) {
+			strip.setPixelColor(i, Wheel(i + animationStep * 255 / steps));
 		}
 	}
 	strip.show();
@@ -87,6 +73,49 @@ void LegLight::drawEinblendenRedBlue(int millies) {
 	strip.show();
 }
 
+void LegLight::drawEinblendenBlueRed(int millies) {
+	int steps = 20;
+	ms = millies;
+	if (ms % 16 == 0) {
+		animationStep++;
+		if (animationStep == 20)
+			animationStep = 0;
+		for (int i = 0; i < strip.numPixels(); i++) {
+			if (animationStep < steps) {
+				strip.setPixelColor(i, getColorBlueToRed(animationStep * 255 / steps));
+			}
+		}
+	}
+	strip.show();
+}
+
+void LegLight::drawLauflicht(int millies) {
+	if (millies % 20 == 0) {
+		if (lauflichtStep == strip.numPixels()) {
+			lauflichtStep = 0;
+			laufLichtColor = getRandomBlueWhiteRed(255);
+		}
+		for (int i = 0; i < strip.numPixels(); i++) {
+			if (i == lauflichtStep || i == lauflichtStep - 1) {
+				strip.setPixelColor(i, laufLichtColor);
+			} else {
+				strip.setPixelColor(i, 0, 0, 0);
+			}
+		}
+		lauflichtStep = lauflichtStep + 1;
+	}
+	strip.show();
+}
+
+void LegLight::drawRandomColors(int millies) {
+	if (millies % 50 == 0) {
+		for (int i = 0; i < strip.numPixels(); i++) {
+			strip.setPixelColor(i, getRandomBlueWhiteRed(255));
+		}
+	}
+	strip.show();
+}
+
 void LegLight::drawAllRed() {
 	for (int i = 0; i < strip.numPixels(); i++) {
 		strip.setPixelColor(i, getColorRed(255));
@@ -96,8 +125,23 @@ void LegLight::drawAllRed() {
 
 uint32_t LegLight::getColorBlue(int brightness) {
 	int b = brightness;
-	int r = 0; //255 - brightness;
-	return strip.Color(r, 0, b);
+	int r = 0; //brightness * 0.3f;
+	int g = 0; //brightness * 0.99f;
+	return strip.Color(r, g, b);
+}
+
+uint32_t LegLight::getRandomBlueWhiteRed(int brightness) {
+	switch (random(3)) {
+	default:
+	case 0:
+		return strip.Color(brightness, 0, 0);
+	case 1:
+		return strip.Color(brightness, brightness, brightness);
+	case 2:
+		return strip.Color(0, 0, brightness);
+	case 3:
+		return strip.Color(0, brightness, 0);
+	}
 }
 
 uint32_t LegLight::getColorRed(int brightness) {
@@ -106,7 +150,13 @@ uint32_t LegLight::getColorRed(int brightness) {
 
 uint32_t LegLight::getColorRedToBlue(int brightness) {
 	int b = brightness;
+	int g = 0; //brightness;
 	int r = 255 - brightness;
+	return strip.Color(r, g, b);
+}
+uint32_t LegLight::getColorBlueToRed(int brightness) {
+	int r = brightness;
+	int b = 255 - brightness;
 	return strip.Color(r, 0, b);
 }
 
