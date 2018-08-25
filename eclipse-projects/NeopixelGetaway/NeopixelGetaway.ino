@@ -6,6 +6,7 @@
 #include <Adafruit_NeoPixel.h>
 
 #include "Rampe.h"
+#include "LegLight8.h"
 
 // Parameter 1 = number of pixels in strip,  neopixel stick has 8
 // Parameter 2 = pin number (most are valid)
@@ -20,6 +21,11 @@ Adafruit_NeoPixel rampeObenStrip = Adafruit_NeoPixel(31, 7, NEO_GRB + NEO_KHZ800
 Rampe rampeOben(rampeObenStrip);
 Adafruit_NeoPixel rampeBahnStrip = Adafruit_NeoPixel(18, 5, NEO_GRB + NEO_KHZ800);
 Rampe rampeBahn(rampeBahnStrip);
+
+Adafruit_NeoPixel legVLStrip = Adafruit_NeoPixel(8, 4, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel legVRStrip = Adafruit_NeoPixel(8, 3, NEO_GRB + NEO_KHZ800);
+LegLight8 legVL(legVLStrip);
+LegLight8 legVR(legVRStrip);
 
 int millies = 0;
 int deltaMillies = 25;
@@ -36,6 +42,12 @@ void setup() {
 	rampeBahnStrip.setBrightness(255);
 	rampeBahnStrip.begin();
 	rampeBahnStrip.show(); // Initialize all pixels to 'off'
+	legVLStrip.setBrightness(255);
+	legVLStrip.begin();
+	legVLStrip.show(); // Initialize all pixels to 'off'
+	legVRStrip.setBrightness(255);
+	legVRStrip.begin();
+	legVRStrip.show(); // Initialize all pixels to 'off'
 
 }
 
@@ -48,6 +60,7 @@ void loop() {
 	drawRampeOben();
 	drawRampeHinten();
 	drawRampeBahn();
+	drawLegs2();
 	delay(deltaMillies);
 }
 
@@ -56,7 +69,6 @@ void drawRampeOben() {
 		rampeOben.init();
 	} else {
 		rampeOben.drawTronLight();
-
 	}
 }
 
@@ -76,5 +88,49 @@ void drawRampeBahn() {
 	} else {
 		rampeBahn.drawPoliceChase();
 	}
+}
+
+void drawLegs() {
+	if (millies == 0 || millies == 6000) {
+		legVL.init();
+		legVR.init();
+	} else if (millies < 6000) {
+		legVL.drawWheel2(millies);
+		legVR.drawWheel2(millies);
+	} else {
+		legVL.drawLauflicht(millies);
+		legVR.drawLauflicht(millies);
+	}
+}
+
+int legMode = 3;
+
+void drawLegs2() {
+	if (millies == 0) {
+		legMode = random(4);
+		legVL.init();
+		legVR.init();
+	}
+	switch (legMode) {
+	default:
+	case 0:
+		legVL.drawLauflicht(millies);
+		legVR.drawLauflicht(millies);
+		break;
+	case 1:
+		legVL.drawWheel(millies);
+		legVR.drawWheel(millies);
+		break;
+	case 2:
+		legVL.drawWheel2(millies);
+		legVR.drawWheel2(millies);
+		break;
+	case 3:
+		legVL.drawBarGraphWheeled(millies);
+		legVR.drawBarGraphWheeled(millies);
+		break;
+
+	}
+
 }
 
