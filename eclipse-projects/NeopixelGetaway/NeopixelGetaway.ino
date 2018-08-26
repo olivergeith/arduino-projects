@@ -27,6 +27,11 @@ Adafruit_NeoPixel legVRStrip = Adafruit_NeoPixel(8, 3, NEO_GRB + NEO_KHZ800);
 LegLight8 legVL(legVLStrip);
 LegLight8 legVR(legVRStrip);
 
+Adafruit_NeoPixel legHLStrip = Adafruit_NeoPixel(6, 2, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel legHRStrip = Adafruit_NeoPixel(6, 1, NEO_GRB + NEO_KHZ800);
+LegLight8 legHL(legHLStrip);
+LegLight8 legHR(legHRStrip);
+
 int millies = 0;
 int deltaMillies = 25;
 
@@ -48,6 +53,12 @@ void setup() {
 	legVRStrip.setBrightness(255);
 	legVRStrip.begin();
 	legVRStrip.show(); // Initialize all pixels to 'off'
+	legHLStrip.setBrightness(255);
+	legHLStrip.begin();
+	legHLStrip.show(); // Initialize all pixels to 'off'
+	legHRStrip.setBrightness(255);
+	legHRStrip.begin();
+	legHRStrip.show(); // Initialize all pixels to 'off'
 
 }
 
@@ -116,18 +127,26 @@ void drawLegs2() {
 	case 0:
 		legVL.drawLauflicht(millies);
 		legVR.drawLauflicht(millies);
+		legHL.drawLauflicht(millies);
+		legHR.drawLauflicht(millies);
 		break;
 	case 1:
 		legVL.drawWheel(millies);
 		legVR.drawWheel(millies);
+		legHL.drawWheel(millies);
+		legHR.drawWheel(millies);
 		break;
 	case 2:
 		legVL.drawWheel2(millies);
 		legVR.drawWheel2(millies);
+		legHL.drawWheel2(millies);
+		legHR.drawWheel2(millies);
 		break;
 	case 3:
 		legVL.drawBarGraphWheeled(millies);
 		legVR.drawBarGraphWheeled(millies);
+		legHL.drawBarGraphWheeled(millies);
+		legHR.drawBarGraphWheeled(millies);
 		break;
 
 	}
