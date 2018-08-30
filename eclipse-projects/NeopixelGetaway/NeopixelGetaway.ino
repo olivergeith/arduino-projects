@@ -32,6 +32,11 @@ Adafruit_NeoPixel legHRStrip = Adafruit_NeoPixel(6, 1, NEO_GRB + NEO_KHZ800);
 LegLight8 legHL(legHLStrip);
 LegLight8 legHR(legHRStrip);
 
+Adafruit_NeoPixel button1Strip = Adafruit_NeoPixel(8, 8, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel button2Strip = Adafruit_NeoPixel(8, 9, NEO_GRB + NEO_KHZ800);
+LegLight8 button1(button1Strip);
+LegLight8 button2(button2Strip);
+
 int millies = 0;
 int deltaMillies = 25;
 
@@ -59,6 +64,13 @@ void setup() {
 	legHRStrip.setBrightness(255);
 	legHRStrip.begin();
 	legHRStrip.show(); // Initialize all pixels to 'off'
+
+	button1Strip.setBrightness(255);
+	button1Strip.begin();
+	button1Strip.show(); // Initialize all pixels to 'off'
+	button2Strip.setBrightness(255);
+	button2Strip.begin();
+	button2Strip.show(); // Initialize all pixels to 'off'
 
 }
 
@@ -121,6 +133,10 @@ void drawLegs2() {
 		legMode = random(4);
 		legVL.init();
 		legVR.init();
+		legHL.init();
+		legHR.init();
+		button1.init();
+		button2.init();
 	}
 	switch (legMode) {
 	default:
@@ -129,24 +145,32 @@ void drawLegs2() {
 		legVR.drawLauflicht(millies);
 		legHL.drawLauflicht(millies);
 		legHR.drawLauflicht(millies);
+		button1.drawLauflicht(millies);
+		button2.drawLauflicht(millies);
 		break;
 	case 1:
 		legVL.drawWheel(millies);
 		legVR.drawWheel(millies);
 		legHL.drawWheel(millies);
 		legHR.drawWheel(millies);
+		button1.drawWheel(millies);
+		button2.drawWheel(millies);
 		break;
 	case 2:
 		legVL.drawWheel2(millies);
 		legVR.drawWheel2(millies);
 		legHL.drawWheel2(millies);
 		legHR.drawWheel2(millies);
+		button1.drawWheel2(millies);
+		button2.drawWheel2(millies);
 		break;
 	case 3:
 		legVL.drawBarGraphWheeled(millies);
 		legVR.drawBarGraphWheeled(millies);
 		legHL.drawBarGraphWheeled(millies);
 		legHR.drawBarGraphWheeled(millies);
+		button1.drawBarGraphWheeled(millies);
+		button2.drawBarGraphWheeled(millies);
 		break;
 
 	}
