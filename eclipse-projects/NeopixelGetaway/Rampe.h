@@ -20,7 +20,9 @@ public:
 
 	void drawEinblenden(int millies);
 	void drawEinblendenRedBlue(int millies);
-	void drawTronLight();
+	void drawTronLightWhite();
+	void drawTronLightRed();
+	void drawTronLightPoliceChase();
 	void drawPoliceChase();
 	int max;
 	int delta = 1;

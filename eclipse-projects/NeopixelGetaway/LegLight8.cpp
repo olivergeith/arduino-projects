@@ -54,17 +54,17 @@ void LegLight8::drawWheel(int millies) {
 	strip.show();
 }
 
-void LegLight8::drawWheel2(int millies) {
+void LegLight8::drawWheelAllColors(int millies) {
 	animationStep = animationStep + 4;
 	if (animationStep >= 256)
 		animationStep = 0;
 	for (int i = 0; i < strip.numPixels(); i++) {
-		strip.setPixelColor(i, Wheel(animationStep + i * 256 / strip.numPixels()));
+		strip.setPixelColor(i, Wheel(animationStep + i * 256 / strip.numPixels() / 3));
 	}
 	strip.show();
 }
 
-void LegLight8::drawLauflicht(int millies) {
+void LegLight8::drawLauflichtRandomColor(int millies) {
 	if (millies % 50 == 0) {
 		if (lauflichtStep == strip.numPixels()) {
 			lauflichtStep = 0;
@@ -81,6 +81,27 @@ void LegLight8::drawLauflicht(int millies) {
 		strip.show();
 	}
 }
+
+void LegLight8::drawLauflichtRotGelbGruen(int millies) {
+	if (millies % 50 == 0) {
+		if (lauflichtStep == strip.numPixels()) {
+			lauflichtStep = 0;
+			animationStep++;
+			if (animationStep == 3)
+				animationStep = 0;
+		}
+		for (int i = 0; i < strip.numPixels(); i++) {
+			if (i == lauflichtStep || i == lauflichtStep - 1) {
+				strip.setPixelColor(i, getColorRotGelbGruen(animationStep));
+			} else {
+				strip.setPixelColor(i, 0, 0, 0);
+			}
+		}
+		lauflichtStep = lauflichtStep + 1;
+		strip.show();
+	}
+}
+
 void LegLight8::drawBarGraphWheeled(int millies) {
 	if (millies % 100 == 0) {
 		if (lauflichtStep == strip.numPixels()) {
@@ -103,6 +124,19 @@ void LegLight8::drawBarGraphWheeled(int millies) {
 
 uint32_t LegLight8::getRandomColor(int brightness) {
 	return Wheel(random(256));
+}
+
+uint32_t LegLight8::getColorRotGelbGruen(int color) {
+	switch (color) {
+	default:
+	case 0:
+		return Wheel(0);
+	case 1:
+		return Wheel(16);
+	case 2:
+		return Wheel(64);
+
+	}
 }
 
 uint32_t LegLight8::getColorRed(int brightness) {

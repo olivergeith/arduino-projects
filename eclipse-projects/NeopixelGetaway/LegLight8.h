@@ -18,8 +18,9 @@ public:
 
 	void drawEinblendenRed(int millies);
 	void drawWheel(int millies);
-	void drawWheel2(int millies);
-	void drawLauflicht(int millies);
+	void drawWheelAllColors(int millies);
+	void drawLauflichtRandomColor(int millies);
+	void drawLauflichtRotGelbGruen(int millies);
 	void drawBarGraphWheeled(int millies);
 	int max;
 	int delta = 1;
@@ -31,6 +32,7 @@ public:
 	uint32_t laufLichtColor;
 
 	uint32_t getRandomColor(int brightness);
+	uint32_t getColorRotGelbGruen(int brightness);
 	uint32_t Wheel(byte WheelPos);
 	uint32_t getColorWhite(int brightness);
 	uint32_t getColorRed(int brightness);

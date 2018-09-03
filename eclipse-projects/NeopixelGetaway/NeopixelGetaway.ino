@@ -80,49 +80,46 @@ void loop() {
 	if (millies >= 10000)
 		millies = 0;
 
-	drawRampeOben();
-	drawRampeHinten();
-	drawRampeBahn();
+	drawRampen();
 	drawLegs2();
 	delay(deltaMillies);
 }
 
-void drawRampeOben() {
-	if (millies == 0) {
+void drawRampen() {
+	if (millies == 0 || millies == 7000) {
 		rampeOben.init();
+		rampeBahn.init();
+		rampeHinten.init();
+	} else if (millies < 7000) {
+		rampeOben.drawTronLightWhite();
+		rampeBahn.drawTronLightWhite();
+		rampeHinten.drawTronLightWhite();
 	} else {
-		rampeOben.drawTronLight();
+		rampeOben.drawTronLightPoliceChase();
+		rampeBahn.drawTronLightPoliceChase();
+		rampeHinten.drawTronLightPoliceChase();
 	}
+	/*	if (millies == 0) {
+	 rampeOben.init();
+	 } else {
+	 rampeOben.drawTronLightPoliceChase();
+	 }*/
 }
 
 void drawRampeHinten() {
 	if (millies == 0) {
 		rampeHinten.init();
 	} else {
-		//rampeHinten.drawTronLight();
-		rampeHinten.drawTronLight();
+		rampeHinten.drawTronLightWhite();
 	}
 }
 void drawRampeBahn() {
-	if (millies == 0 || millies == 6000) {
+	if (millies == 0 || millies == 7000) {
 		rampeBahn.init();
-	} else if (millies < 6000) {
-		rampeBahn.drawTronLight();
+	} else if (millies < 7000) {
+		rampeBahn.drawTronLightWhite();
 	} else {
-		rampeBahn.drawPoliceChase();
-	}
-}
-
-void drawLegs() {
-	if (millies == 0 || millies == 6000) {
-		legVL.init();
-		legVR.init();
-	} else if (millies < 6000) {
-		legVL.drawWheel2(millies);
-		legVR.drawWheel2(millies);
-	} else {
-		legVL.drawLauflicht(millies);
-		legVR.drawLauflicht(millies);
+		rampeBahn.drawTronLightPoliceChase();
 	}
 }
 
@@ -130,7 +127,9 @@ int legMode = 3;
 
 void drawLegs2() {
 	if (millies == 0) {
-		legMode = random(4);
+		legMode++;
+		if (legMode == 4)
+			legMode = 0;
 		legVL.init();
 		legVR.init();
 		legHL.init();
@@ -141,12 +140,12 @@ void drawLegs2() {
 	switch (legMode) {
 	default:
 	case 0:
-		legVL.drawLauflicht(millies);
-		legVR.drawLauflicht(millies);
-		legHL.drawLauflicht(millies);
-		legHR.drawLauflicht(millies);
-		button1.drawLauflicht(millies);
-		button2.drawLauflicht(millies);
+		legVL.drawLauflichtRotGelbGruen(millies);
+		legVR.drawLauflichtRotGelbGruen(millies);
+		legHL.drawLauflichtRotGelbGruen(millies);
+		legHR.drawLauflichtRotGelbGruen(millies);
+		button1.drawLauflichtRotGelbGruen(millies);
+		button2.drawLauflichtRotGelbGruen(millies);
 		break;
 	case 1:
 		legVL.drawWheel(millies);
@@ -157,12 +156,12 @@ void drawLegs2() {
 		button2.drawWheel(millies);
 		break;
 	case 2:
-		legVL.drawWheel2(millies);
-		legVR.drawWheel2(millies);
-		legHL.drawWheel2(millies);
-		legHR.drawWheel2(millies);
-		button1.drawWheel2(millies);
-		button2.drawWheel2(millies);
+		legVL.drawWheelAllColors(millies);
+		legVR.drawWheelAllColors(millies);
+		legHL.drawWheelAllColors(millies);
+		legHR.drawWheelAllColors(millies);
+		button1.drawWheelAllColors(millies);
+		button2.drawWheelAllColors(millies);
 		break;
 	case 3:
 		legVL.drawBarGraphWheeled(millies);

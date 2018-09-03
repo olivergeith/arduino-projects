@@ -95,7 +95,7 @@ void Rampe::drawEinblendenRedBlue(int millies) {
 	strip.show();
 }
 
-void Rampe::drawTronLight() {
+void Rampe::drawTronLightWhite() {
 	animationStep++;
 	if (animationStep == strip.numPixels() + 5)
 		animationStep = -5;
@@ -117,6 +117,61 @@ void Rampe::drawTronLight() {
 	}
 	strip.show();
 }
+
+void Rampe::drawTronLightRed() {
+	animationStep++;
+	if (animationStep == strip.numPixels() + 5)
+		animationStep = -5;
+	for (int i = 0; i < strip.numPixels(); i++) {
+		if (i == animationStep)
+			strip.setPixelColor(i, getColorRed(164));
+		else if (i == animationStep + 1 || i == animationStep - 1)
+			strip.setPixelColor(i, getColorRed(64));
+		else if (i == animationStep + 2 || i == animationStep - 2)
+			strip.setPixelColor(i, getColorRed(64));
+		else if (i == animationStep + 3 || i == animationStep - 3)
+			strip.setPixelColor(i, getColorRed(32));
+		else if (i == animationStep + 4 || i == animationStep - 4)
+			strip.setPixelColor(i, getColorRed(16));
+		else if (i == animationStep + 5 || i == animationStep - 5)
+			strip.setPixelColor(i, getColorRed(8));
+		else
+			strip.setPixelColor(i, 0, 0, 0);
+	}
+	strip.show();
+}
+
+void Rampe::drawTronLightPoliceChase() {
+	animationStep++;
+	if (animationStep == strip.numPixels() + 5)
+		animationStep = -5;
+	for (int i = 0; i < strip.numPixels(); i++) {
+		if (i == animationStep)
+			if (animating)
+				strip.setPixelColor(i, getColorRed(164));
+			else
+				strip.setPixelColor(i, getColorBlue(164));
+
+		else if (i == animationStep + 1 || i == animationStep - 1)
+			if (animating)
+				strip.setPixelColor(i, getColorRed(64));
+			else
+				strip.setPixelColor(i, getColorBlue(64));
+		else if (i == animationStep + 2 || i == animationStep - 2)
+			strip.setPixelColor(i, getColorRed(64));
+		else if (i == animationStep + 3 || i == animationStep - 3)
+			strip.setPixelColor(i, getColorRed(32));
+		else if (i == animationStep + 4 || i == animationStep - 4)
+			strip.setPixelColor(i, getColorRed(16));
+		else if (i == animationStep + 5 || i == animationStep - 5)
+			strip.setPixelColor(i, getColorRed(8));
+		else
+			strip.setPixelColor(i, 0, 0, 0);
+	}
+	animating = !animating;
+	strip.show();
+}
+
 void Rampe::drawPoliceChase() {
 
 	animationStep++;
