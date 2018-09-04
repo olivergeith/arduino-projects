@@ -18,8 +18,8 @@ public:
 	void drawLauflichtBlau(int millies);
 	void drawLauflichtBlauBuildingUp(int millies);
 
-	void drawEinblenden(int millies);
-	void drawEinblendenRedBlue(int millies);
+	void drawTronLightBackAndForthWhite();
+
 	void drawTronLightWhite();
 	void drawTronLightRed();
 	void drawTronLightPoliceChase();

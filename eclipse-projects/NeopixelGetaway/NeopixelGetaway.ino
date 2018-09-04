@@ -37,6 +37,9 @@ Adafruit_NeoPixel button2Strip = Adafruit_NeoPixel(8, 9, NEO_GRB + NEO_KHZ800);
 LegLight8 button1(button1Strip);
 LegLight8 button2(button2Strip);
 
+Adafruit_NeoPixel outHoleStrip = Adafruit_NeoPixel(12, 10, NEO_GRB + NEO_KHZ800);
+LegLight8 outHole(outHoleStrip);
+
 int millies = 0;
 int deltaMillies = 25;
 
@@ -72,6 +75,10 @@ void setup() {
 	button2Strip.begin();
 	button2Strip.show(); // Initialize all pixels to 'off'
 
+	outHoleStrip.setBrightness(255);
+	outHoleStrip.begin();
+	outHoleStrip.show(); // Initialize all pixels to 'off'
+
 }
 
 void loop() {
@@ -99,28 +106,7 @@ void drawRampen() {
 		rampeBahn.drawTronLightPoliceChase();
 		rampeHinten.drawTronLightPoliceChase();
 	}
-	/*	if (millies == 0) {
-	 rampeOben.init();
-	 } else {
-	 rampeOben.drawTronLightPoliceChase();
-	 }*/
-}
-
-void drawRampeHinten() {
-	if (millies == 0) {
-		rampeHinten.init();
-	} else {
-		rampeHinten.drawTronLightWhite();
-	}
-}
-void drawRampeBahn() {
-	if (millies == 0 || millies == 7000) {
-		rampeBahn.init();
-	} else if (millies < 7000) {
-		rampeBahn.drawTronLightWhite();
-	} else {
-		rampeBahn.drawTronLightPoliceChase();
-	}
+	outHole.drawWheelColorful(1);
 }
 
 int legMode = 3;
@@ -148,12 +134,12 @@ void drawLegs2() {
 		button2.drawLauflichtRotGelbGruen(millies);
 		break;
 	case 1:
-		legVL.drawWheel(millies);
-		legVR.drawWheel(millies);
-		legHL.drawWheel(millies);
-		legHR.drawWheel(millies);
-		button1.drawWheel(millies);
-		button2.drawWheel(millies);
+		legVL.drawWheel(2);
+		legVR.drawWheel(2);
+		legHL.drawWheel(2);
+		legHR.drawWheel(2);
+		button1.drawWheel(2);
+		button2.drawWheel(2);
 		break;
 	case 2:
 		legVL.drawWheelAllColors(millies);

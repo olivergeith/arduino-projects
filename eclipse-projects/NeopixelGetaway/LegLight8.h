@@ -17,7 +17,8 @@ public:
 	void init();
 
 	void drawEinblendenRed(int millies);
-	void drawWheel(int millies);
+	void drawWheel(int step);
+	void drawWheelColorful(int step);
 	void drawWheelAllColors(int millies);
 	void drawLauflichtRandomColor(int millies);
 	void drawLauflichtRotGelbGruen(int millies);

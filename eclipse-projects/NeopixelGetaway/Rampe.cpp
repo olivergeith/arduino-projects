@@ -17,7 +17,7 @@ Rampe::~Rampe() {
 }
 
 void Rampe::init() {
-	animating = false;
+	animating = true;
 	animationStep = 0;
 	max = strip.numPixels();
 }
@@ -63,38 +63,6 @@ void Rampe::drawLauflichtBlauBuildingUp(int millies) {
 	strip.show();
 }
 
-void Rampe::drawEinblenden(int millies) {
-	int steps = 20;
-	ms = millies;
-	if (ms % 50 == 0) {
-		animationStep++;
-		if (animationStep == 30)
-			animationStep = 0;
-		for (int i = 0; i < strip.numPixels(); i++) {
-			if (animationStep < steps) {
-				strip.setPixelColor(i, getColorBlue(animationStep * 255 / steps));
-			}
-		}
-	}
-	strip.show();
-}
-
-void Rampe::drawEinblendenRedBlue(int millies) {
-	int steps = 20;
-	ms = millies;
-	if (ms % 50 == 0) {
-		animationStep++;
-		if (animationStep == 30)
-			animationStep = 0;
-		for (int i = 0; i < strip.numPixels(); i++) {
-			if (animationStep < steps) {
-				strip.setPixelColor(i, getColorRedToBlue(animationStep * 255 / steps));
-			}
-		}
-	}
-	strip.show();
-}
-
 void Rampe::drawTronLightWhite() {
 	animationStep++;
 	if (animationStep == strip.numPixels() + 5)
@@ -112,6 +80,37 @@ void Rampe::drawTronLightWhite() {
 			strip.setPixelColor(i, getColorWhite(16));
 		else if (i == animationStep + 5 || i == animationStep - 5)
 			strip.setPixelColor(i, getColorWhite(8));
+		else
+			strip.setPixelColor(i, 0, 0, 0);
+	}
+	strip.show();
+}
+
+void Rampe::drawTronLightBackAndForthWhite() {
+
+	if (animating)
+		animationStep++;
+	else
+		animationStep--;
+
+	if (animationStep >= strip.numPixels())
+		animating = false;
+	if (animationStep <= 0)
+		animating = true;
+
+	for (int i = 0; i < strip.numPixels(); i++) {
+		if (i == animationStep)
+			strip.setPixelColor(i, getColorBlue(164));
+		else if (i == animationStep + 1 || i == animationStep - 1)
+			strip.setPixelColor(i, getColorBlue(64));
+		else if (i == animationStep + 2 || i == animationStep - 2)
+			strip.setPixelColor(i, getColorBlue(64));
+		else if (i == animationStep + 3 || i == animationStep - 3)
+			strip.setPixelColor(i, getColorBlue(32));
+		else if (i == animationStep + 4 || i == animationStep - 4)
+			strip.setPixelColor(i, getColorBlue(16));
+		else if (i == animationStep + 5 || i == animationStep - 5)
+			strip.setPixelColor(i, getColorBlue(8));
 		else
 			strip.setPixelColor(i, 0, 0, 0);
 	}

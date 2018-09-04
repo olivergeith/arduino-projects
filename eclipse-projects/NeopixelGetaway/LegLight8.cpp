@@ -43,13 +43,22 @@ void LegLight8::drawEinblendenRed(int millies) {
 	strip.show();
 }
 
-void LegLight8::drawWheel(int millies) {
-	animationStep++;
-	animationStep++;
-	if (animationStep == 256)
+void LegLight8::drawWheel(int step) {
+	animationStep = animationStep + step;
+	if (animationStep >= 256)
 		animationStep = 0;
 	for (int i = 0; i < strip.numPixels(); i++) {
 		strip.setPixelColor(i, Wheel(animationStep));
+	}
+	strip.show();
+}
+
+void LegLight8::drawWheelColorful(int step) {
+	animationStep = animationStep + step;
+	if (animationStep >= 256)
+		animationStep = 0;
+	for (int i = 0; i < strip.numPixels(); i++) {
+		strip.setPixelColor(i, Wheel(animationStep + i));
 	}
 	strip.show();
 }
