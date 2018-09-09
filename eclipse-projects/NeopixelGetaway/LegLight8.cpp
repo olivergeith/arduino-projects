@@ -58,7 +58,7 @@ void LegLight8::drawWheelColorful(int step) {
 	if (animationStep >= 256)
 		animationStep = 0;
 	for (int i = 0; i < strip.numPixels(); i++) {
-		strip.setPixelColor(i, Wheel(animationStep + i));
+		strip.setPixelColor(i, Wheel(animationStep));
 	}
 	strip.show();
 }

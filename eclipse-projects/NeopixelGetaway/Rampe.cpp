@@ -147,15 +147,15 @@ void Rampe::drawTronLightPoliceChase() {
 	for (int i = 0; i < strip.numPixels(); i++) {
 		if (i == animationStep)
 			if (animating)
-				strip.setPixelColor(i, getColorRed(164));
+				strip.setPixelColor(i, getColorRed(255));
 			else
-				strip.setPixelColor(i, getColorBlue(164));
+				strip.setPixelColor(i, getColorBlue(255));
 
 		else if (i == animationStep + 1 || i == animationStep - 1)
 			if (animating)
-				strip.setPixelColor(i, getColorRed(64));
+				strip.setPixelColor(i, getColorRed(128));
 			else
-				strip.setPixelColor(i, getColorBlue(64));
+				strip.setPixelColor(i, getColorBlue(128));
 		else if (i == animationStep + 2 || i == animationStep - 2)
 			strip.setPixelColor(i, getColorRed(64));
 		else if (i == animationStep + 3 || i == animationStep - 3)
