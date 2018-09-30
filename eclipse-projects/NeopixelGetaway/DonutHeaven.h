@@ -1,34 +1,34 @@
 /*
- * LegLight8.h
+ * DonutHeaven.h
  *
  *  Created on: 11.02.2016
  *      Author: Oliver
  */
 
-#ifndef LegLight8_H_
-#define LegLight8_H_
+#ifndef DonutHeaven_H_
+#define DonutHeaven_H_
 #include <Adafruit_NeoPixel.h>
 
-class LegLight8 {
+class DonutHeaven {
 public:
-	LegLight8(Adafruit_NeoPixel strip);
-	virtual ~LegLight8();
+	DonutHeaven(Adafruit_NeoPixel strip);
+	virtual ~DonutHeaven();
 
 	void init();
 
-	void drawEinblendenRed(int millies);
 	void drawWheel(int step);
 	void drawWheelColorful(int step);
 	void drawWheelAllColors(int millies);
 	void drawLauflichtRandomColor(int millies);
-	void drawLauflichtRotGelbGruen(int millies);
+	void drawLauflichtColorful(int millies);
 	void drawBarGraphWheeled(int millies);
-	void drawTronLightBackAndForthWhite();
+	void drawBarGraphWheeledColorfull(int millies);
 	int max;
 	int delta = 1;
 	int ms = 0;
 	bool animating;
 	int animationStep;
+	int anzLetters = 11;
 
 	int lauflichtStep = 0;
 	uint32_t laufLichtColor;

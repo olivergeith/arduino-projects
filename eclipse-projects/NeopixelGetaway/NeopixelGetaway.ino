@@ -7,6 +7,8 @@
 
 #include "Rampe.h"
 #include "LegLight8.h"
+#include "DonutHeaven.h"
+#include "SpeakerPanel.h"
 
 // Parameter 1 = number of pixels in strip,  neopixel stick has 8
 // Parameter 2 = pin number (most are valid)
@@ -39,6 +41,12 @@ LegLight8 button2(button2Strip);
 
 Adafruit_NeoPixel outHoleStrip = Adafruit_NeoPixel(12, 10, NEO_GRB + NEO_KHZ800);
 LegLight8 outHole(outHoleStrip);
+
+Adafruit_NeoPixel donutHeavenStrip = Adafruit_NeoPixel(19, 11, NEO_GRB + NEO_KHZ800);
+DonutHeaven donutHeaven(donutHeavenStrip);
+
+Adafruit_NeoPixel speakerPanelStrip = Adafruit_NeoPixel(41, 12, NEO_GRB + NEO_KHZ800);
+SpeakerPanel speakerPanel(speakerPanelStrip);
 
 int millies = 0;
 int deltaMillies = 25;
@@ -79,6 +87,14 @@ void setup() {
 	outHoleStrip.begin();
 	outHoleStrip.show(); // Initialize all pixels to 'off'
 
+	donutHeavenStrip.setBrightness(255);
+	donutHeavenStrip.begin();
+	donutHeavenStrip.show(); // Initialize all pixels to 'off'
+
+	speakerPanelStrip.setBrightness(255);
+	speakerPanelStrip.begin();
+	speakerPanelStrip.show(); // Initialize all pixels to 'off'
+
 }
 
 void loop() {
@@ -89,7 +105,34 @@ void loop() {
 
 	drawRampen();
 	drawLegs2();
+	drawDonutHeaven();
+	drawSpeakerPanel();
 	delay(deltaMillies);
+}
+
+int donutMode = 0;
+void drawDonutHeaven() {
+	switch (donutMode) {
+	default:
+	case 0:
+		donutHeaven.drawWheelAllColors(millies);
+		break;
+	case 1:
+		donutHeaven.drawLauflichtColorful(millies);
+		break;
+	case 2:
+		donutHeaven.drawLauflichtRandomColor(millies);
+		break;
+	case 3:
+		donutHeaven.drawBarGraphWheeledColorfull(millies);
+		break;
+	}
+
+	if (millies == 0) {
+		donutMode++;
+		if (donutMode == 4)
+			donutMode = 0;
+	}
 }
 
 void drawRampen() {
@@ -158,6 +201,38 @@ void drawLegs2() {
 		button2.drawBarGraphWheeled(millies);
 		break;
 
+	}
+
+}
+
+int speakerMode = 0;
+
+void drawSpeakerPanel() {
+	switch (speakerMode) {
+	default:
+	case 0:
+		speakerPanel.drawEinblenden(255, 255, 0, 50);
+		// speakerPanel.drawTronLightBackAndForthWhite();
+		break;
+	case 1:
+		speakerPanel.drawWheel(2);
+		break;
+	case 2:
+		speakerPanel.drawWheelAllColors(8);
+		break;
+	case 3:
+		speakerPanel.drawBarGraphWheeledColorfull(millies);
+		break;
+	case 4:
+		speakerPanel.drawBarGraphWheeled(millies);
+		break;
+
+	}
+	if (millies == 0) {
+		speakerMode++;
+		if (speakerMode == 5)
+			speakerMode = 0;
+//		speakerPanel.init();
 	}
 
 }

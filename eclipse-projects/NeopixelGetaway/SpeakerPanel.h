@@ -1,28 +1,30 @@
 /*
- * LegLight8.h
+ * SpeakerPanel.h
  *
  *  Created on: 11.02.2016
  *      Author: Oliver
  */
 
-#ifndef LegLight8_H_
-#define LegLight8_H_
+#ifndef SpeakerPanel_H_
+#define SpeakerPanel_H_
 #include <Adafruit_NeoPixel.h>
 
-class LegLight8 {
+class SpeakerPanel {
 public:
-	LegLight8(Adafruit_NeoPixel strip);
-	virtual ~LegLight8();
+	SpeakerPanel(Adafruit_NeoPixel strip);
+	virtual ~SpeakerPanel();
 
 	void init();
 
-	void drawEinblendenRed(int millies);
+	void drawEinblendenGreen();
+	void drawEinblenden(int r, int g, int b, int steps);
 	void drawWheel(int step);
 	void drawWheelColorful(int step);
-	void drawWheelAllColors(int millies);
+	void drawWheelAllColors(int step);
 	void drawLauflichtRandomColor(int millies);
 	void drawLauflichtRotGelbGruen(int millies);
 	void drawBarGraphWheeled(int millies);
+	void drawBarGraphWheeledColorfull(int millies);
 	void drawTronLightBackAndForthWhite();
 	int max;
 	int delta = 1;
@@ -37,7 +39,7 @@ public:
 	uint32_t getColorRotGelbGruen(int brightness);
 	uint32_t Wheel(byte WheelPos);
 	uint32_t getColorWhite(int brightness);
-	uint32_t getColorRed(int brightness);
+	uint32_t getColorGreen(int brightness);
 
 private:
 	Adafruit_NeoPixel strip;
