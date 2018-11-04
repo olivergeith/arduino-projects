@@ -130,6 +130,7 @@ void drawDonutHeaven() {
 
 	if (millies == 0) {
 		donutMode++;
+		donutHeaven.init();
 		if (donutMode == 4)
 			donutMode = 0;
 	}

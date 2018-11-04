@@ -24,7 +24,13 @@
 //Param4 instructions:Connect to LCD_Pin CS/CE(it means LCD_Model Pin_CS/CE Connect to Arduino_UNO Pin9)
 //Param5 instructions:Connect to LCD_Pin RST/RESET(it means LCD_Model Pin_RST/RESET Connect to Arduino_UNO Pin12)
 //Param6 instructions:Connect to LCD_Pin RS/DC(it means LCD_Model Pin_RS/DC Connect to Arduino_UNO Pin8)
-UTFT myGLCD(QD_TFT180A, 11, 10, 9, 12, 8); // Remember to change the model parameter to suit your display module!
+UTFT myGLCD(QD_TFT180A, //
+		9, // LCD_Pin SDA/SDI/MOSI(it means LCD_Model Pin_SDA/SDI/MOSI Connect to Arduino_UNO Pin11)
+		8, // LCD_Pin SCL/CLK/SCLK(it means LCD_Model Pin_SCL/CLK/SCLK Connect to Arduino_UNO Pin10)
+		11,  // LCD_Pin CS/CE(it means LCD_Model Pin_CS/CE Connect to Arduino_UNO Pin9)
+		12, // LCD_Pin RST/RESET(it means LCD_Model Pin_RST/RESET Connect to Arduino_UNO Pin12)
+		10); // LCD_Pin RS/DC(it means LCD_Model Pin_RS/DC Connect to Arduino_UNO Pin8)
+// Remember to change the model parameter to suit your display module!
 
 // Declare which fonts we will be using
 extern uint8_t SmallFont[];
@@ -162,8 +168,7 @@ void loop() {
 			myGLCD.setColor(255, 255, 0);
 			break;
 		}
-		myGLCD.fillRect(39 + (i * 10), 23 + (i * 10), 59 + (i * 10),
-				43 + (i * 10));
+		myGLCD.fillRect(39 + (i * 10), 23 + (i * 10), 59 + (i * 10), 43 + (i * 10));
 	}
 
 	delay(2000);
@@ -195,8 +200,7 @@ void loop() {
 			myGLCD.setColor(255, 255, 0);
 			break;
 		}
-		myGLCD.fillRoundRect(99 - (i * 10), 23 + (i * 10), 119 - (i * 10),
-				43 + (i * 10));
+		myGLCD.fillRoundRect(99 - (i * 10), 23 + (i * 10), 119 - (i * 10), 43 + (i * 10));
 	}
 
 	delay(2000);
