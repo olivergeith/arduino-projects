@@ -63,7 +63,7 @@ void LegLight8::drawWheelColorful(int step) {
 	strip.show();
 }
 
-void LegLight8::drawWheelAllColors(int millies) {
+void LegLight8::drawRotatingColors(int millies) {
 	animationStep = animationStep + 4;
 	if (animationStep >= 256)
 		animationStep = 0;
@@ -73,7 +73,7 @@ void LegLight8::drawWheelAllColors(int millies) {
 	strip.show();
 }
 
-void LegLight8::drawLauflichtRandomColor(int millies) {
+void LegLight8::drawDoubleLauflichtWheeled(int millies) {
 	if (millies % 50 == 0) {
 		if (lauflichtStep == strip.numPixels()) {
 			lauflichtStep = 0;
@@ -131,7 +131,7 @@ void LegLight8::drawBarGraphWheeled(int millies) {
 	}
 }
 
-void LegLight8::drawTronLightBackAndForthWhite() {
+void LegLight8::drawTronLight() {
 
 	if (animating)
 		animationStep++;

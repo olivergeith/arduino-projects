@@ -4,9 +4,8 @@
 // button once to start the first animation!
 
 #include <Adafruit_NeoPixel.h>
-#include "U8glib.h"
+#include "U8glibOllies.h"
 #include "IRremote.h"
-
 
 #define PIXEL_PIN    6    // Digital IO pin connected to the NeoPixels.
 #define PIXEL_COUNT 16
@@ -17,14 +16,13 @@
 //   NEO_GRB     Pixels are wired for GRB bitstream, correct for neopixel stick
 //   NEO_KHZ400  400 KHz bitstream (e.g. FLORA pixels)
 //   NEO_KHZ800  800 KHz bitstream (e.g. High Density LED strip), correct for neopixel stick
-Adafruit_NeoPixel nasaStrip = Adafruit_NeoPixel(PIXEL_COUNT, PIXEL_PIN,
-NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel nasaStrip = Adafruit_NeoPixel(PIXEL_COUNT, PIXEL_PIN, NEO_GRB + NEO_KHZ800);
 
 // IRReceiver
 int IR_RECV_PIN = 7;
 IRrecv irReceiver(IR_RECV_PIN);
 decode_results irResults;
-String ircode="";
+String ircode = "";
 
 // Oled Display
 int d0 = 8;
@@ -39,7 +37,6 @@ U8GLIB_SH1106_128X64 u8g(d0, d1, cs, dc, res);
 int j = 0;
 int dt = 1;		// Speed
 int cycles = 1; // Anzahl der Farbdurchläufe
-
 
 void setup() {
 	Serial.begin(9600);
@@ -60,13 +57,13 @@ void loop() {
 		default:
 			break;
 		case 16754775: // dt +
-			dt = dt*2;
+			dt = dt * 2;
 			if (dt > 64)
 				dt = 64;
 			ircode = "speed ++";
 			break;
 		case 16769055: // dt -
-			dt=dt/2;
+			dt = dt / 2;
 			if (dt < 1)
 				dt = 1;
 			ircode = "speed --";
@@ -88,8 +85,7 @@ void loop() {
 	}
 
 	for (int i = 0; i < nasaStrip.numPixels(); i++) {
-		nasaStrip.setPixelColor(i,
-				Wheel(((i * 256 / nasaStrip.numPixels() * cycles) + j)));
+		nasaStrip.setPixelColor(i, Wheel(((i * 256 / nasaStrip.numPixels() * cycles) + j)));
 	}
 	/*
 	 for(int i=0; i< strip.numPixels(); i++) {

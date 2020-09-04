@@ -54,7 +54,7 @@
 		<link>
 			<name>libraries/U8glib</name>
 			<type>2</type>
-			<location>C:/dataP/ws_git/arduino-projects/libraries/U8glib</location>
+			<location>C:/dataP/ws_git/arduino-projects/libraries/U8glibOllies</location>
 		</link>
 	</linkedResources>
 </projectDescription>

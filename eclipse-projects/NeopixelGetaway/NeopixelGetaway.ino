@@ -39,8 +39,8 @@ Adafruit_NeoPixel button2Strip = Adafruit_NeoPixel(8, 9, NEO_GRB + NEO_KHZ800);
 LegLight8 button1(button1Strip);
 LegLight8 button2(button2Strip);
 
-Adafruit_NeoPixel outHoleStrip = Adafruit_NeoPixel(12, 10, NEO_GRB + NEO_KHZ800);
-LegLight8 outHole(outHoleStrip);
+Adafruit_NeoPixel strip1 = Adafruit_NeoPixel(12, 10, NEO_GRB + NEO_KHZ800);
+LegLight8 circle(strip1);
 
 Adafruit_NeoPixel donutHeavenStrip = Adafruit_NeoPixel(19, 11, NEO_GRB + NEO_KHZ800);
 DonutHeaven donutHeaven(donutHeavenStrip);
@@ -52,6 +52,7 @@ int millies = 0;
 int deltaMillies = 25;
 
 void setup() {
+
 
 	millies = 0;
 	rampeObenStrip.setBrightness(255);
@@ -83,9 +84,9 @@ void setup() {
 	button2Strip.begin();
 	button2Strip.show(); // Initialize all pixels to 'off'
 
-	outHoleStrip.setBrightness(255);
-	outHoleStrip.begin();
-	outHoleStrip.show(); // Initialize all pixels to 'off'
+	strip1.setBrightness(255);
+	strip1.begin();
+	strip1.show(); // Initialize all pixels to 'off'
 
 	donutHeavenStrip.setBrightness(255);
 	donutHeavenStrip.begin();
@@ -110,9 +111,9 @@ void loop() {
 	delay(deltaMillies);
 }
 
-int donutMode = 0;
+int modus = 0;
 void drawDonutHeaven() {
-	switch (donutMode) {
+	switch (modus) {
 	default:
 	case 0:
 		donutHeaven.drawWheelAllColors(millies);
@@ -129,10 +130,10 @@ void drawDonutHeaven() {
 	}
 
 	if (millies == 0) {
-		donutMode++;
+		modus++;
 		donutHeaven.init();
-		if (donutMode == 4)
-			donutMode = 0;
+		if (modus == 4)
+			modus = 0;
 	}
 }
 
@@ -150,7 +151,7 @@ void drawRampen() {
 		rampeBahn.drawTronLightPoliceChase();
 		rampeHinten.drawTronLightPoliceChase();
 	}
-	outHole.drawWheelColorful(1);
+	circle.drawWheelColorful(1);
 }
 
 int legMode = 3;
@@ -186,12 +187,12 @@ void drawLegs2() {
 		button2.drawWheel(2);
 		break;
 	case 2:
-		legVL.drawWheelAllColors(millies);
-		legVR.drawWheelAllColors(millies);
-		legHL.drawWheelAllColors(millies);
-		legHR.drawWheelAllColors(millies);
-		button1.drawWheelAllColors(millies);
-		button2.drawWheelAllColors(millies);
+		legVL.drawRotatingColors(millies);
+		legVR.drawRotatingColors(millies);
+		legHL.drawRotatingColors(millies);
+		legHR.drawRotatingColors(millies);
+		button1.drawRotatingColors(millies);
+		button2.drawRotatingColors(millies);
 		break;
 	case 3:
 		legVL.drawBarGraphWheeled(millies);

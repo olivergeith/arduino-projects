@@ -106,10 +106,11 @@ void drawNextService() {
 
 void drawDonutHeaven() {
 	myGLCD.setFont(Arial_round_16x24);
-	myGLCD.setColor(255, 255, 255);
+	myGLCD.setColor(0, 0, 0);
 	myGLCD.print("DONUTS", CENTER, 20);
 	myGLCD.print("& COFFEE", CENTER, 44);
 
+	myGLCD.setColor(255, 255, 255);
 	myGLCD.setFont(SmallFont);
 	myGLCD.print("Next Exit", CENTER, 78);
 	myGLCD.print("Turn Right", CENTER, 92);

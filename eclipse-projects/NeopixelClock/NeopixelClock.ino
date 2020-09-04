@@ -4,7 +4,7 @@
 // button once to start the first animation!
 
 #include <Adafruit_NeoPixel.h>
-#include "U8glib.h"
+#include "U8glibOllies.h"
 #include <stdarg.h>
 #include <Wire.h>
 #include "RTClib.h"

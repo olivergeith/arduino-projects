@@ -19,11 +19,11 @@ public:
 	void drawEinblendenRed(int millies);
 	void drawWheel(int step);
 	void drawWheelColorful(int step);
-	void drawWheelAllColors(int millies);
-	void drawLauflichtRandomColor(int millies);
+	void drawRotatingColors(int millies);
+	void drawDoubleLauflichtWheeled(int millies);
 	void drawLauflichtRotGelbGruen(int millies);
 	void drawBarGraphWheeled(int millies);
-	void drawTronLightBackAndForthWhite();
+	void drawTronLight();
 	int max;
 	int delta = 1;
 	int ms = 0;
