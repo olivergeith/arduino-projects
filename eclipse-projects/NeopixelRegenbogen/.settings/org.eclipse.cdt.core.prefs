@@ -169,13 +169,13 @@ environment/project/it.baeyens.arduino.core.toolChain.release.539517396/A.CONFIG
 environment/project/it.baeyens.arduino.core.toolChain.release.539517396/A.CONFIG.PATH/value=${A.TOOLS.AVRDUDE.CONFIG.PATH}
 environment/project/it.baeyens.arduino.core.toolChain.release.539517396/A.EXTRA.TIME.DTS/delimiter=;
 environment/project/it.baeyens.arduino.core.toolChain.release.539517396/A.EXTRA.TIME.DTS/operation=replace
-environment/project/it.baeyens.arduino.core.toolChain.release.539517396/A.EXTRA.TIME.DTS/value=3600
+environment/project/it.baeyens.arduino.core.toolChain.release.539517396/A.EXTRA.TIME.DTS/value=0
 environment/project/it.baeyens.arduino.core.toolChain.release.539517396/A.EXTRA.TIME.LOCAL/delimiter=;
 environment/project/it.baeyens.arduino.core.toolChain.release.539517396/A.EXTRA.TIME.LOCAL/operation=replace
-environment/project/it.baeyens.arduino.core.toolChain.release.539517396/A.EXTRA.TIME.LOCAL/value=1600283616
+environment/project/it.baeyens.arduino.core.toolChain.release.539517396/A.EXTRA.TIME.LOCAL/value=1615812111
 environment/project/it.baeyens.arduino.core.toolChain.release.539517396/A.EXTRA.TIME.UTC/delimiter=;
 environment/project/it.baeyens.arduino.core.toolChain.release.539517396/A.EXTRA.TIME.UTC/operation=replace
-environment/project/it.baeyens.arduino.core.toolChain.release.539517396/A.EXTRA.TIME.UTC/value=1600276416
+environment/project/it.baeyens.arduino.core.toolChain.release.539517396/A.EXTRA.TIME.UTC/value=1615808511
 environment/project/it.baeyens.arduino.core.toolChain.release.539517396/A.EXTRA.TIME.ZONE/delimiter=;
 environment/project/it.baeyens.arduino.core.toolChain.release.539517396/A.EXTRA.TIME.ZONE/operation=replace
 environment/project/it.baeyens.arduino.core.toolChain.release.539517396/A.EXTRA.TIME.ZONE/value=3600

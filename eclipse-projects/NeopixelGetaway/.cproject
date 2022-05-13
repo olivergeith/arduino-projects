@@ -25,7 +25,6 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NeopixelLauflichtFlipper/core/core}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NeopixelLauflichtFlipper/core/variant}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NeopixelLauflichtFlipper/libraries/U8glib}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NeopixelLauflichtFlipper/libraries/U8glib/utility}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NeopixelLauflichtFlipper/libraries/Adafruit_NeoPixel}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NeopixelNASAPanel/core/core}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NeopixelNASAPanel/core/variant}&quot;"/>
@@ -47,7 +46,6 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NeopixelLauflichtFlipper/core/core}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NeopixelLauflichtFlipper/core/variant}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NeopixelLauflichtFlipper/libraries/U8glib}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NeopixelLauflichtFlipper/libraries/U8glib/utility}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NeopixelLauflichtFlipper/libraries/Adafruit_NeoPixel}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NeopixelNASAPanel/core/core}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NeopixelNASAPanel/core/variant}&quot;"/>
